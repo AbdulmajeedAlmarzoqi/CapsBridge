@@ -11,7 +11,7 @@ struct ContentView: View {
             if model.inspection.windowsMachines.count > 1 {
                 machinePicker
             }
-            if !model.checks.isEmpty {
+            if !model.isStarting, !model.checks.isEmpty {
                 checkList
             }
             if let failure = model.failure {
@@ -40,7 +40,7 @@ struct ContentView: View {
 
     private var header: some View {
         HStack(alignment: .top, spacing: 16) {
-            SummaryIcon(summary: model.summary, isChecking: model.activity == .checking)
+            SummaryIcon(summary: model.summary, isChecking: model.isStarting)
             VStack(alignment: .leading, spacing: 6) {
                 Text(model.headline)
                     .font(.title2.bold())
@@ -83,7 +83,11 @@ struct ContentView: View {
 
     @ViewBuilder
     private var footer: some View {
-        if model.activity == .working {
+        if model.isStarting {
+            ProgressView()
+                .controlSize(.small)
+                .accessibilityHidden(true)
+        } else if model.activity == .working {
             HStack(spacing: 10) {
                 ProgressView()
                     .controlSize(.small)

@@ -45,11 +45,14 @@ final class AppModel {
 
     // MARK: - What the window shows
 
+    /// Whether the first check is still under way, and there's nothing to show or press yet.
+    var isStarting: Bool { !hasStarted }
+
     var summary: Inspection.Summary { inspection.summary }
     var checks: [Check] { inspection.checks }
 
     var headline: String {
-        if activity == .checking && !hasStarted { return String(localized: "Checking this Mac and Windows…") }
+        if isStarting { return String(localized: "Checking this Mac and Windows…") }
         switch summary {
         case .vmpalMissing: return String(localized: "VMPal isn't installed")
         case .noWindowsMachine: return String(localized: "No Windows virtual machine yet")
@@ -62,7 +65,7 @@ final class AppModel {
     }
 
     var explanation: String {
-        if activity == .checking && !hasStarted { return "" }
+        if isStarting { return "" }
         switch summary {
         case .vmpalMissing:
             return String(localized: "CapsBridge works with Windows virtual machines in VMPal. Install VMPal, create a Windows virtual machine, then open CapsBridge again.")
