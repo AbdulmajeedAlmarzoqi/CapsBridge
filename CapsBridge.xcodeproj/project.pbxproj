@@ -1,0 +1,566 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		088B511A9761D92264A3665E /* HelperController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E023B13646F5999F597CFA4B /* HelperController.swift */; };
+		7DD4CCA0DCBBC1F89BE3987A /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = FEA6D2942C8659459A258D23 /* Localizable.xcstrings */; };
+		80E16E9B43ED2AA75C996022 /* CapsBridgeHelper.app in Embed Dependencies */ = {isa = PBXBuildFile; fileRef = 9B60A0B560305DDD83FAFE16 /* CapsBridgeHelper.app */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8350EB550345E967F93FAA6E /* CapsBridgeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 21067992C1EFB075BAF47AB4 /* CapsBridgeKit */; };
+		87EFC9D91168CD4CFF0F10A7 /* AppLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182E3CECB7917B3857FA002B /* AppLocation.swift */; };
+		8A278D0B32685EE02703C1F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97A0F6635B86CC220C626405 /* Assets.xcassets */; };
+		99793B9D20351204C977E85D /* com.abdulmajeedalmarzoqi.capsbridge.helper.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 26FF84544386FB322550FF5F /* com.abdulmajeedalmarzoqi.capsbridge.helper.plist */; };
+		9AE7BF1EDBB911CA0330CF88 /* CapsBridgeKit in Frameworks */ = {isa = PBXBuildFile; productRef = B65A6A315D1A614F5FC351D7 /* CapsBridgeKit */; };
+		C6A647F140C4F8B7A2C0C250 /* CapsBridgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB0576E10FF03365B3AE8F7 /* CapsBridgeApp.swift */; };
+		CF59D8206607DAF9AF6F5246 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8BC93A7AA3410FA1A513D5 /* main.swift */; };
+		E496D6029284488EC720CEC8 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC852C1591520B43B68930BD /* AppModel.swift */; };
+		E60AC7475E5DADEEB9938DB0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF4199B924B5B2DA37F3430B /* ContentView.swift */; };
+		ECAC55594B5F14F906D8A25D /* Inspection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9E2A120B2BFFEBFEF28F2 /* Inspection.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F790694ED63DDD32509E6B00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDA1E2F0685138BD38C8F0A3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BFB9795D4B4F5C534C6D37BF;
+			remoteInfo = CapsBridgeHelper;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E16D583504D5F03B0C2C815C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchAgents;
+			dstSubfolderSpec = 1;
+			files = (
+				99793B9D20351204C977E85D /* com.abdulmajeedalmarzoqi.capsbridge.helper.plist in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4A7418CB0BFF05D601F2B29 /* Embed Dependencies */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LoginItems;
+			dstSubfolderSpec = 1;
+			files = (
+				80E16E9B43ED2AA75C996022 /* CapsBridgeHelper.app in Embed Dependencies */,
+			);
+			name = "Embed Dependencies";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		182E3CECB7917B3857FA002B /* AppLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLocation.swift; sourceTree = "<group>"; };
+		26FF84544386FB322550FF5F /* com.abdulmajeedalmarzoqi.capsbridge.helper.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = com.abdulmajeedalmarzoqi.capsbridge.helper.plist; sourceTree = "<group>"; };
+		3037B2EA7F5588F4B74C496F /* CapsBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CapsBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		97A0F6635B86CC220C626405 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9B60A0B560305DDD83FAFE16 /* CapsBridgeHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CapsBridgeHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6D9E2A120B2BFFEBFEF28F2 /* Inspection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inspection.swift; sourceTree = "<group>"; };
+		CE8BC93A7AA3410FA1A513D5 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		DD57B65C80859845F9D34A5E /* CapsBridgeKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CapsBridgeKit; path = Packages/CapsBridgeKit; sourceTree = SOURCE_ROOT; };
+		E023B13646F5999F597CFA4B /* HelperController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperController.swift; sourceTree = "<group>"; };
+		EC852C1591520B43B68930BD /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		EEB0576E10FF03365B3AE8F7 /* CapsBridgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsBridgeApp.swift; sourceTree = "<group>"; };
+		EF4199B924B5B2DA37F3430B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FEA6D2942C8659459A258D23 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3A35EF168FDEA8444731A44B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8350EB550345E967F93FAA6E /* CapsBridgeKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		57D040D6A78E0DF4A9632CB2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AE7BF1EDBB911CA0330CF88 /* CapsBridgeKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1137AF869B267360D43D09BA /* CapsBridge */ = {
+			isa = PBXGroup;
+			children = (
+				182E3CECB7917B3857FA002B /* AppLocation.swift */,
+				EC852C1591520B43B68930BD /* AppModel.swift */,
+				EEB0576E10FF03365B3AE8F7 /* CapsBridgeApp.swift */,
+				EF4199B924B5B2DA37F3430B /* ContentView.swift */,
+				E023B13646F5999F597CFA4B /* HelperController.swift */,
+				B6D9E2A120B2BFFEBFEF28F2 /* Inspection.swift */,
+			);
+			path = CapsBridge;
+			sourceTree = "<group>";
+		};
+		1A81C7F0375784341F9BF127 = {
+			isa = PBXGroup;
+			children = (
+				E9E6C7EB527600ACAA81FE1A /* Packages */,
+				A5D50BBB40FA316C5CF4D7BB /* Resources */,
+				79D1796293306D968707A903 /* Sources */,
+				8440B0A89DFBBDF91A7C29CD /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3449B5F105041C68DC603E10 /* LaunchAgents */ = {
+			isa = PBXGroup;
+			children = (
+				26FF84544386FB322550FF5F /* com.abdulmajeedalmarzoqi.capsbridge.helper.plist */,
+			);
+			path = LaunchAgents;
+			sourceTree = "<group>";
+		};
+		79D1796293306D968707A903 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				1137AF869B267360D43D09BA /* CapsBridge */,
+				DC87311F4E8038A851108B29 /* CapsBridgeHelper */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		8440B0A89DFBBDF91A7C29CD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3037B2EA7F5588F4B74C496F /* CapsBridge.app */,
+				9B60A0B560305DDD83FAFE16 /* CapsBridgeHelper.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A5D50BBB40FA316C5CF4D7BB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3449B5F105041C68DC603E10 /* LaunchAgents */,
+				97A0F6635B86CC220C626405 /* Assets.xcassets */,
+				FEA6D2942C8659459A258D23 /* Localizable.xcstrings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		DC87311F4E8038A851108B29 /* CapsBridgeHelper */ = {
+			isa = PBXGroup;
+			children = (
+				CE8BC93A7AA3410FA1A513D5 /* main.swift */,
+			);
+			path = CapsBridgeHelper;
+			sourceTree = "<group>";
+		};
+		E9E6C7EB527600ACAA81FE1A /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				DD57B65C80859845F9D34A5E /* CapsBridgeKit */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		49930C666C96455862DE0D22 /* CapsBridge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1E7C9AFE79508565A6E064E8 /* Build configuration list for PBXNativeTarget "CapsBridge" */;
+			buildPhases = (
+				8E53E3694FCF7D972BDFDEAA /* Sources */,
+				7E528CEBB2B2EA35AB49CAB4 /* Resources */,
+				E16D583504D5F03B0C2C815C /* CopyFiles */,
+				57D040D6A78E0DF4A9632CB2 /* Frameworks */,
+				E4A7418CB0BFF05D601F2B29 /* Embed Dependencies */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BD281737ACD3F47571C5E334 /* PBXTargetDependency */,
+			);
+			name = CapsBridge;
+			packageProductDependencies = (
+				B65A6A315D1A614F5FC351D7 /* CapsBridgeKit */,
+			);
+			productName = CapsBridge;
+			productReference = 3037B2EA7F5588F4B74C496F /* CapsBridge.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BFB9795D4B4F5C534C6D37BF /* CapsBridgeHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ACA1F9606AFF822FBBC6620F /* Build configuration list for PBXNativeTarget "CapsBridgeHelper" */;
+			buildPhases = (
+				9ADD0DB7BDB5D9DE2D857CBA /* Sources */,
+				3A35EF168FDEA8444731A44B /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CapsBridgeHelper;
+			packageProductDependencies = (
+				21067992C1EFB075BAF47AB4 /* CapsBridgeKit */,
+			);
+			productName = CapsBridgeHelper;
+			productReference = 9B60A0B560305DDD83FAFE16 /* CapsBridgeHelper.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CDA1E2F0685138BD38C8F0A3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					49930C666C96455862DE0D22 = {
+						DevelopmentTeam = JLNFD3HP3G;
+						ProvisioningStyle = Automatic;
+					};
+					BFB9795D4B4F5C534C6D37BF = {
+						DevelopmentTeam = JLNFD3HP3G;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = BF9FBCFDF4C270669BF2ED34 /* Build configuration list for PBXProject "CapsBridge" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 1A81C7F0375784341F9BF127;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D36D0BE564077687B91971DD /* XCLocalSwiftPackageReference "Packages/CapsBridgeKit" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 8440B0A89DFBBDF91A7C29CD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				49930C666C96455862DE0D22 /* CapsBridge */,
+				BFB9795D4B4F5C534C6D37BF /* CapsBridgeHelper */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7E528CEBB2B2EA35AB49CAB4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A278D0B32685EE02703C1F1 /* Assets.xcassets in Resources */,
+				7DD4CCA0DCBBC1F89BE3987A /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8E53E3694FCF7D972BDFDEAA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				87EFC9D91168CD4CFF0F10A7 /* AppLocation.swift in Sources */,
+				E496D6029284488EC720CEC8 /* AppModel.swift in Sources */,
+				C6A647F140C4F8B7A2C0C250 /* CapsBridgeApp.swift in Sources */,
+				E60AC7475E5DADEEB9938DB0 /* ContentView.swift in Sources */,
+				088B511A9761D92264A3665E /* HelperController.swift in Sources */,
+				ECAC55594B5F14F906D8A25D /* Inspection.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9ADD0DB7BDB5D9DE2D857CBA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CF59D8206607DAF9AF6F5246 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BD281737ACD3F47571C5E334 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BFB9795D4B4F5C534C6D37BF /* CapsBridgeHelper */;
+			targetProxy = F790694ED63DDD32509E6B00 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1BEFA3B6FE52273F87B921AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "CapsBridge Helper";
+				INFOPLIST_KEY_LSBackgroundOnly = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Abdulmajeed Almarzoqi";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdulmajeedalmarzoqi.capsbridge.helper;
+				PRODUCT_NAME = CapsBridgeHelper;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2303F88708E302E94E826655 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = JLNFD3HP3G;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		A98DB551B4816E3640BFED3D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "CapsBridge Helper";
+				INFOPLIST_KEY_LSBackgroundOnly = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Abdulmajeed Almarzoqi";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdulmajeedalmarzoqi.capsbridge.helper;
+				PRODUCT_NAME = CapsBridgeHelper;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		B78797CA6A89A2DD9B344702 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = JLNFD3HP3G;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		E96C3F6E4286EBEBEC95C62B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CapsBridge;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Abdulmajeed Almarzoqi";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdulmajeedalmarzoqi.capsbridge;
+				PRODUCT_NAME = CapsBridge;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		F4AF49D282D997BDF46F3705 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CapsBridge;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Abdulmajeed Almarzoqi";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdulmajeedalmarzoqi.capsbridge;
+				PRODUCT_NAME = CapsBridge;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1E7C9AFE79508565A6E064E8 /* Build configuration list for PBXNativeTarget "CapsBridge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E96C3F6E4286EBEBEC95C62B /* Debug */,
+				F4AF49D282D997BDF46F3705 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		ACA1F9606AFF822FBBC6620F /* Build configuration list for PBXNativeTarget "CapsBridgeHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1BEFA3B6FE52273F87B921AA /* Debug */,
+				A98DB551B4816E3640BFED3D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BF9FBCFDF4C270669BF2ED34 /* Build configuration list for PBXProject "CapsBridge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B78797CA6A89A2DD9B344702 /* Debug */,
+				2303F88708E302E94E826655 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		D36D0BE564077687B91971DD /* XCLocalSwiftPackageReference "Packages/CapsBridgeKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/CapsBridgeKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		21067992C1EFB075BAF47AB4 /* CapsBridgeKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CapsBridgeKit;
+		};
+		B65A6A315D1A614F5FC351D7 /* CapsBridgeKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CapsBridgeKit;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = CDA1E2F0685138BD38C8F0A3 /* Project object */;
+}
