@@ -54,17 +54,24 @@ struct HelperController {
             try register()
         case .notRunning, .outdated:
             // launchd starts the copy inside this app again.
-            if await !restart() {
-                try? await service.unregister()
-                try register()
-            }
+            if await restart(), await isRunning(within: 5) { return }
+            // launchd holds on to the signature of the copy that registered, and won't start one signed
+            // otherwise, as after the app was replaced. Registering anew gives it this copy's.
+            try? await service.unregister()
+            try? await Task.sleep(for: .milliseconds(500))
+            try register()
         }
-        for _ in 0..<40 {
-            if state() == .running { return }
-            try await Task.sleep(for: .milliseconds(250))
-        }
+        if await isRunning(within: 10) { return }
         if state() == .needsApproval { throw Failure.needsApproval }
         throw Failure.couldNotStart("")
+    }
+
+    private func isRunning(within seconds: Int) async -> Bool {
+        for _ in 0..<(seconds * 4) {
+            if state() == .running { return true }
+            try? await Task.sleep(for: .milliseconds(250))
+        }
+        return state() == .running
     }
 
     func remove() async {
