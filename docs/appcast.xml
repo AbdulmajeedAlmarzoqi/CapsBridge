@@ -8,7 +8,7 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     <language>en</language>
     <item>
       <title>CapsBridge 1.0.0</title>
-      <pubDate>Tue, 20 Oct 2026 07:55:53 GMT</pubDate>
+      <pubDate>Tue, 20 Oct 2026 08:07:30 GMT</pubDate>
       <sparkle:version>1</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>26.0.0</sparkle:minimumSystemVersion>
@@ -19,10 +19,10 @@ First release.]]></description>
       <description xml:lang="ar" sparkle:format="markdown"><![CDATA[### الإصدار 1.0.0 من CapsBridge
 
 الإصدار الأول.]]></description>
-      <enclosure url="https://github.com/AbdulmajeedAlmarzoqi/CapsBridge/releases/download/v1.0.0/CapsBridge-1.0.0.zip" length="3171912" type="application/octet-stream" sparkle:edSignature="S2bSDxSBISCipJzF2N06w8HpzGHrYN3cz7A/g6oGgglz3xPM3zXWjFn3OPdyDB5LjpL5egCsQKuShiC4VTAOCg=="></enclosure>
+      <enclosure url="https://github.com/AbdulmajeedAlmarzoqi/CapsBridge/releases/download/v1.0.0/CapsBridge-1.0.0.zip" length="3171692" type="application/octet-stream" sparkle:edSignature="nVe87jZLAeZKJWKyNG0oQCwxX8Z7rxZ+0dQhh/JxRxPn/vW477ARAy5vVSWGNkzF1OgM8WHRbKc45TfqRUyDCQ=="></enclosure>
     </item>
   </channel>
 </rss><!-- sparkle-signatures:
-edSignature: 5SMmFx/vz/Wb0ozOIGmrkUFuRZojQTJzgFd0fVN5/6871PUdscpHsBE4dfjmW42G9GjErLuDhcD68MDJ2MJUBA==
+edSignature: bC+EMoKJ6pLgnX14WGkv0qxw+4Z8iomf0ep1N1892NbXQI4/YprFnj0wULt82Z2b8aRtLo5bRqd7RK1IalHTDw==
 length: 1534
 -->
