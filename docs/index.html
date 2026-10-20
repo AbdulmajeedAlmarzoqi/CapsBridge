@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CapsBridge: Caps Lock as your screen reader's key in Windows on a Mac</title>
-<meta name="description" content="CapsBridge lets you hold Caps Lock as your screen reader's key in a Windows virtual machine on a Mac. One button sets it up, one button removes it. Free and open source.">
+<title>CapsBridge</title>
+<meta name="description" content="Use Caps Lock as your screen reader key in Windows on a Mac.">
 <meta property="og:title" content="CapsBridge">
-<meta property="og:description" content="Caps Lock as your screen reader's key in Windows on a Mac.">
+<meta property="og:description" content="Use Caps Lock as your screen reader key in Windows on a Mac.">
 <meta property="og:image" content="https://abdulmajeedalmarzoqi.github.io/CapsBridge/icon.png">
 <meta property="og:type" content="website">
 <link rel="canonical" href="https://abdulmajeedalmarzoqi.github.io/CapsBridge/">
@@ -21,74 +21,48 @@
 <header class="hero wrap">
   <img src="icon.png" alt="" width="120" height="120">
   <h1>CapsBridge</h1>
-  <p class="tagline">Caps Lock as your screen reader's key, in Windows on your Mac.</p>
+  <p class="tagline">Use Caps Lock as your screen reader key in Windows on a Mac.</p>
   <div class="actions">
-    <a class="button primary" href="https://github.com/AbdulmajeedAlmarzoqi/CapsBridge/releases/latest">Download for Mac</a>
-    <a class="button" href="https://github.com/AbdulmajeedAlmarzoqi/CapsBridge">Source on GitHub</a>
+    <a class="button primary" href="https://github.com/AbdulmajeedAlmarzoqi/CapsBridge/releases/latest">Download</a>
+    <a class="button" href="https://github.com/AbdulmajeedAlmarzoqi/CapsBridge">GitHub</a>
     <a class="button" href="ar/" lang="ar" hreflang="ar">العربية</a>
   </div>
-  <p class="needs">Free and open source. For Apple silicon Macs with macOS 26 or later, and Windows in VMPal.</p>
+  <p class="needs">Free and open source. Requires an Apple silicon Mac with macOS 26 or later, and VMPal.</p>
 </header>
 
 <main id="main" class="wrap">
   <section aria-labelledby="problem">
-    <h2 id="problem">The problem</h2>
-    <p>On a laptop keyboard, most screen reader users make Caps Lock their modifier key: hold it, press T, and NVDA reads the window's title. JAWS and Narrator work the same way.</p>
-    <p>Run Windows in a virtual machine on a Mac and that stops working. macOS tells apps that Caps Lock changed state, never that it was pressed and released, so Windows can't see you holding it. You press Caps Lock with another key, and the screen reader hears only the other key.</p>
-  </section>
-
-  <section aria-labelledby="fix">
-    <h2 id="fix">What CapsBridge does</h2>
-    <p>CapsBridge sends Caps Lock to Windows as a key that really goes down and comes up. Your screen reader gets the Caps Lock it expects: hold it for commands, press it twice quickly to turn Caps Lock on or off.</p>
-    <p>It does that only while your Windows virtual machine is in front. Everywhere else on the Mac, Caps Lock stays exactly what it was, for VoiceOver too.</p>
+    <h2 id="problem">Why</h2>
+    <p>In a Windows virtual machine on a Mac, holding Caps Lock does nothing for NVDA, because macOS only tells the virtual machine when Caps Lock turns on or off. CapsBridge fixes that while the Windows window is in front, and leaves Caps Lock alone everywhere else on the Mac.</p>
   </section>
 
   <section aria-labelledby="setup">
-    <h2 id="setup">Setting it up</h2>
+    <h2 id="setup">Installing</h2>
     <ol>
-      <li>Download CapsBridge, unzip it and open it. Let it move itself to the Applications folder.</li>
-      <li>Press <strong>Set Up</strong>.</li>
-      <li>When it asks, let it restart Windows. Save your work in Windows first.</li>
+      <li>Download the zip and open CapsBridge.</li>
+      <li>Let it move itself to the Applications folder.</li>
+      <li>Click <strong>Set Up</strong>, and let it restart Windows when it asks.</li>
     </ol>
-    <p>CapsBridge finds VMPal and your Windows virtual machine by itself, installs a small helper on the Mac, teaches Windows the key, and turns on Caps Lock in NVDA if NVDA is there and it was off. Every step is spoken by VoiceOver as it happens.</p>
-    <p>After that you don't need the app open. Open it again whenever you want to check: it lists what it looked at, says what's fine and what isn't, and its button fixes what isn't.</p>
-  </section>
-
-  <section aria-labelledby="remove">
-    <h2 id="remove">Removing it</h2>
-    <p>Press <strong>Remove CapsBridge…</strong> in the app. It takes its key mapping out of Windows, puts NVDA's setting back the way it found it, removes its helper from the Mac, and offers to move the app to the Trash. Nothing else on either side is touched.</p>
+    <p>To remove it, click <strong>Remove CapsBridge…</strong> in the app.</p>
   </section>
 
   <section aria-labelledby="questions">
     <h2 id="questions">Questions</h2>
 
-    <h3>Does it change Caps Lock on my Mac?</h3>
-    <p>No. The mapping is on only while the Windows virtual machine's window is in front, and it's never saved. In every other app Caps Lock behaves as always.</p>
+    <h3>Does it change Caps Lock on the Mac?</h3>
+    <p>No. It only applies while the Windows window is in front.</p>
 
-    <h3>Which screen readers does it work with?</h3>
-    <p>It's tested with NVDA. JAWS in its laptop layout and Narrator use Caps Lock the same way and get the same real key from Windows, so they should work too, though they haven't been tested yet.</p>
+    <h3>Does it work with JAWS or Narrator?</h3>
+    <p>It's tested with NVDA. JAWS and Narrator use Caps Lock the same way, but I haven't tried them yet.</p>
 
-    <h3>What does it change in Windows?</h3>
-    <p>One entry in the registry's <code>Scancode Map</code>, which turns the F18 key the Mac sends into Caps Lock, and NVDA's Caps Lock setting if it was off. The <a href="https://github.com/AbdulmajeedAlmarzoqi/CapsBridge#what-it-changes">full list</a> is in the project's readme.</p>
-
-    <h3>What if I take Windows back to a snapshot?</h3>
-    <p>An older snapshot may not have the key mapping. Open CapsBridge: it notices, and its button reads Fix.</p>
-
-    <h3>Does it work with other virtual machine apps?</h3>
-    <p>Only VMPal for now.</p>
-
-    <h3>How do I get updates?</h3>
-    <p>CapsBridge takes care of it. It checks once a day, shows what's new in your language, and installs the update when you choose to. Every update is signed, and only one from the same developer is installed.</p>
-
-    <h3>Is it safe to open?</h3>
-    <p>The app is signed with an Apple Developer ID and notarized by Apple, and all of its code is public.</p>
+    <h3>How do I update it?</h3>
+    <p>You don't need to. CapsBridge checks for updates and installs them.</p>
   </section>
 </main>
 
 <footer class="wrap">
-  <p>Made by Abdulmajeed Almarzoqi. Released under the MIT license.</p>
+  <p>Made by Abdulmajeed Almarzoqi. MIT License.</p>
   <p><a href="https://github.com/AbdulmajeedAlmarzoqi/CapsBridge/issues">Report a problem</a></p>
-  <p>CapsBridge is not affiliated with VMPal, TablePlus or NV Access.</p>
 </footer>
 </body>
 </html>

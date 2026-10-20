@@ -12,7 +12,7 @@ struct SettingsView: View {
             } header: {
                 Text("Updates")
             } footer: {
-                Text("CapsBridge checks for updates once a day, including while only its helper is running. When an update is available, its release notes are shown before anything is installed, unless updates are installed automatically.")
+                Text("CapsBridge checks for updates once a day.")
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }

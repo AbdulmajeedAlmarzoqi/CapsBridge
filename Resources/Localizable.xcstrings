@@ -201,12 +201,12 @@
         }
       }
     },
-    "CapsBridge checks for updates once a day, including while only its helper is running. When an update is available, its release notes are shown before anything is installed, unless updates are installed automatically." : {
+    "CapsBridge checks for updates once a day." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يتحقق CapsBridge من وجود تحديثات مرة واحدة يوميًا، حتى عندما يعمل مساعده وحده. وعند توفر تحديث تُعرض ملاحظات الإصدار قبل تثبيت أي شيء، ما لم تكن التحديثات تُثبَّت تلقائيًا."
+            "value" : "يتحقق CapsBridge من وجود تحديثات مرة واحدة يوميًا."
           }
         }
       }

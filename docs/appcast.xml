@@ -8,35 +8,21 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     <language>en</language>
     <item>
       <title>CapsBridge 1.0.0</title>
-      <pubDate>Tue, 20 Oct 2026 07:36:29 GMT</pubDate>
+      <pubDate>Tue, 20 Oct 2026 07:55:53 GMT</pubDate>
       <sparkle:version>1</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>26.0.0</sparkle:minimumSystemVersion>
       <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
       <description xml:lang="en" sparkle:format="markdown"><![CDATA[### CapsBridge 1.0.0
 
-CapsBridge lets you use Caps Lock as the screen reader modifier key in Windows virtual machines in VMPal.
-
-- Sets up your Mac and Windows with a single button.
-- Turns on Caps Lock as an NVDA modifier key when NVDA is installed.
-- Checks the configuration each time you open it, and resolves issues automatically.
-- Removes everything it added, including in Windows.
-- Checks for updates and installs them for you.
-- Available in English and Arabic.]]></description>
+First release.]]></description>
       <description xml:lang="ar" sparkle:format="markdown"><![CDATA[### الإصدار 1.0.0 من CapsBridge
 
-يتيح لك CapsBridge استخدام Caps Lock مفتاحَ تعديل لقارئ الشاشة في أجهزة Windows الافتراضية داخل VMPal.
-
-- يُعِدّ الـ Mac وWindows بنقرة واحدة.
-- يفعّل Caps Lock مفتاحَ تعديل في NVDA عند تثبيته.
-- يتحقق من الإعداد في كل مرة تفتحه، ويعالج المشكلات تلقائيًا.
-- يزيل كل ما أضافه، بما في ذلك ما أضافه في Windows.
-- يتحقق من وجود التحديثات ويثبّتها نيابةً عنك.
-- متاح باللغتين العربية والإنجليزية.]]></description>
+الإصدار الأول.]]></description>
       <enclosure url="https://github.com/AbdulmajeedAlmarzoqi/CapsBridge/releases/download/v1.0.0/CapsBridge-1.0.0.zip" length="3171912" type="application/octet-stream" sparkle:edSignature="S2bSDxSBISCipJzF2N06w8HpzGHrYN3cz7A/g6oGgglz3xPM3zXWjFn3OPdyDB5LjpL5egCsQKuShiC4VTAOCg=="></enclosure>
     </item>
   </channel>
 </rss><!-- sparkle-signatures:
-edSignature: EJhF8tNx2BnIfQ0gYpCqntLVlynVnFLjeU/7Yw1hP93MsUqypa2xjbTbwLteveskHwAfZB+fUjcW+UrSX9bdBA==
-length: 2584
+edSignature: 5SMmFx/vz/Wb0ozOIGmrkUFuRZojQTJzgFd0fVN5/6871PUdscpHsBE4dfjmW42G9GjErLuDhcD68MDJ2MJUBA==
+length: 1534
 -->

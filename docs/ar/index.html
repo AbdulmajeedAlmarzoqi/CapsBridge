@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CapsBridge: مفتاح Caps Lock لقارئ الشاشة في Windows على جهاز Mac</title>
-<meta name="description" content="يتيح CapsBridge استخدام Caps Lock بالضغط المستمر مفتاحًا لقارئ الشاشة في جهاز Windows افتراضي على Mac. زر واحد للإعداد وزر واحد للإزالة. مجاني ومفتوح المصدر.">
+<title>CapsBridge</title>
+<meta name="description" content="استخدم Caps Lock مفتاحًا لقارئ الشاشة في Windows على جهاز Mac.">
 <meta property="og:title" content="CapsBridge">
-<meta property="og:description" content="مفتاح Caps Lock لقارئ الشاشة في Windows على جهاز Mac.">
+<meta property="og:description" content="استخدم Caps Lock مفتاحًا لقارئ الشاشة في Windows على جهاز Mac.">
 <meta property="og:image" content="https://abdulmajeedalmarzoqi.github.io/CapsBridge/icon.png">
 <meta property="og:type" content="website">
 <link rel="canonical" href="https://abdulmajeedalmarzoqi.github.io/CapsBridge/ar/">
@@ -21,74 +21,48 @@
 <header class="hero wrap">
   <img src="../icon.png" alt="" width="120" height="120">
   <h1 lang="en" dir="ltr">CapsBridge</h1>
-  <p class="tagline">مفتاح Caps Lock لقارئ الشاشة، في Windows على جهاز Mac.</p>
+  <p class="tagline">استخدم Caps Lock مفتاحًا لقارئ الشاشة في Windows على جهاز Mac.</p>
   <div class="actions">
-    <a class="button primary" href="https://github.com/AbdulmajeedAlmarzoqi/CapsBridge/releases/latest">تنزيل للماك</a>
-    <a class="button" href="https://github.com/AbdulmajeedAlmarzoqi/CapsBridge">المصدر على GitHub</a>
+    <a class="button primary" href="https://github.com/AbdulmajeedAlmarzoqi/CapsBridge/releases/latest">تنزيل</a>
+    <a class="button" href="https://github.com/AbdulmajeedAlmarzoqi/CapsBridge">GitHub</a>
     <a class="button" href="../" lang="en" hreflang="en">English</a>
   </div>
-  <p class="needs">مجاني ومفتوح المصدر. لأجهزة Mac بمعالجات Apple ونظام macOS 26 أو أحدث، مع Windows في VMPal.</p>
+  <p class="needs">مجاني ومفتوح المصدر. يتطلب جهاز Mac بمعالج Apple ونظام macOS 26 أو أحدث، وتطبيق VMPal.</p>
 </header>
 
 <main id="main" class="wrap">
   <section aria-labelledby="problem">
-    <h2 id="problem">المشكلة</h2>
-    <p>على لوحة مفاتيح الحاسوب المحمول، يجعل أغلب مستخدمي قارئات الشاشة مفتاح Caps Lock مفتاح التعديل: تضغطه باستمرار ثم تضغط T فيقرأ NVDA عنوان النافذة. وهكذا يعمل JAWS وNarrator أيضًا.</p>
-    <p>لكن عند تشغيل Windows في جهاز افتراضي على Mac يتوقف ذلك. فنظام macOS يُعلم التطبيقات بأن حالة Caps Lock تبدّلت، ولا يُعلمها بأنه ضُغط ثم رُفع، فلا يرى Windows أنك تضغطه باستمرار. تضغط Caps Lock مع مفتاح آخر، فلا يصل إلى قارئ الشاشة غير المفتاح الآخر.</p>
-  </section>
-
-  <section aria-labelledby="fix">
-    <h2 id="fix">ما الذي يفعله CapsBridge</h2>
-    <p>يرسل CapsBridge مفتاح Caps Lock إلى Windows مفتاحًا حقيقيًا يُضغط ويُرفع. فيحصل قارئ الشاشة على Caps Lock كما ينتظره: اضغطه باستمرار للأوامر، واضغطه مرتين سريعًا لتشغيل الحروف الكبيرة أو إيقافها.</p>
-    <p>ويفعل ذلك فقط عندما تكون نافذة Windows في المقدمة. وفي ما عداها على الـ Mac يبقى Caps Lock كما كان تمامًا، ومع VoiceOver كذلك.</p>
+    <h2 id="problem">لماذا</h2>
+    <p>في جهاز Windows افتراضي على Mac لا يعمل الضغط المستمر على Caps Lock مع NVDA، لأن macOS لا يُعلم الجهاز الافتراضي إلا بتشغيل Caps Lock أو إيقافه. يعالج CapsBridge ذلك حين تكون نافذة Windows في المقدمة، ولا يغيّر Caps Lock في بقية الـ Mac.</p>
   </section>
 
   <section aria-labelledby="setup">
-    <h2 id="setup">طريقة الإعداد</h2>
+    <h2 id="setup">التثبيت</h2>
     <ol>
-      <li>نزّل CapsBridge وفُكّ ضغطه وافتحه، ودعه ينقل نفسه إلى مجلد التطبيقات.</li>
-      <li>اضغط <strong>إعداد</strong>.</li>
-      <li>حين يسألك، اسمح له بإعادة تشغيل Windows، بعد حفظ أي مستندات مفتوحة في Windows.</li>
+      <li>نزّل الملف وافتح CapsBridge.</li>
+      <li>اسمح له بنقل نفسه إلى مجلد التطبيقات.</li>
+      <li>اختر <strong>إعداد</strong>، واسمح له بإعادة تشغيل Windows حين يطلب ذلك.</li>
     </ol>
-    <p>يتعرّف CapsBridge على VMPal وعلى جهاز Windows الافتراضي من تلقاء نفسه، ويثبّت مساعدًا صغيرًا على الـ Mac، ويُعِدّ المفتاح في Windows، ويفعّل Caps Lock في NVDA إن كان مثبّتًا ولم يكن مفعّلًا. وينطق VoiceOver كل خطوة في حينها.</p>
-    <p>بعد ذلك لا حاجة إلى إبقاء التطبيق مفتوحًا. افتحه متى أردت التحقق: يعرض ما فحصه، ويخبرك بالسليم وغير السليم، وزرّه يصلح ما يحتاج إلى إصلاح.</p>
-  </section>
-
-  <section aria-labelledby="remove">
-    <h2 id="remove">طريقة الإزالة</h2>
-    <p>اضغط <strong>إزالة CapsBridge…</strong> في التطبيق. فيزيل تعيين المفتاح من Windows، ويعيد إعداد NVDA كما وجده، ويزيل مساعده من الـ Mac، ويعرض نقل التطبيق إلى سلة المهملات. ولا يمسّ شيئًا آخر في الجهازين.</p>
+    <p>ولإزالته اختر <strong>إزالة CapsBridge…</strong> في التطبيق.</p>
   </section>
 
   <section aria-labelledby="questions">
     <h2 id="questions">أسئلة</h2>
 
     <h3>هل يغيّر Caps Lock على الـ Mac؟</h3>
-    <p>لا. التحويل يعمل فقط عندما تكون نافذة Windows في المقدمة، ولا يُحفظ في أي مكان. وفي بقية التطبيقات يعمل Caps Lock كعادته.</p>
+    <p>لا، يعمل فقط حين تكون نافذة Windows في المقدمة.</p>
 
-    <h3>مع أي قارئات الشاشة يعمل؟</h3>
-    <p>جُرّب مع NVDA. أما JAWS بتخطيط الحاسوب المحمول وNarrator فيستخدمان Caps Lock بالطريقة نفسها ويصلهما المفتاح الحقيقي نفسه من Windows، فالمتوقع أن يعملا أيضًا، لكنهما لم يُجرَّبا بعد.</p>
+    <h3>هل يعمل مع JAWS أو Narrator؟</h3>
+    <p>جرّبته مع NVDA. ويستخدم JAWS وNarrator مفتاح Caps Lock بالطريقة نفسها، لكني لم أجرّبهما بعد.</p>
 
-    <h3>ماذا يغيّر في Windows؟</h3>
-    <p>مدخلًا واحدًا في القيمة <code>Scancode Map</code> في السجل، يحوّل مفتاح F18 الذي يرسله الـ Mac إلى Caps Lock، وإعداد Caps Lock في NVDA إن كان متوقفًا. <a href="https://github.com/AbdulmajeedAlmarzoqi/CapsBridge#what-it-changes">القائمة الكاملة</a> في ملف التعريف بالمشروع، بالإنجليزية.</p>
-
-    <h3>ماذا لو استعدتُ Windows من لقطة سابقة؟</h3>
-    <p>قد لا تحتوي اللقطة الأقدم على تعيين المفتاح. افتح CapsBridge: سيلاحظ ذلك، وسيظهر زرّه باسم «إصلاح».</p>
-
-    <h3>هل يعمل مع تطبيقات أخرى للأجهزة الافتراضية؟</h3>
-    <p>مع VMPal فقط في الوقت الحالي.</p>
-
-    <h3>كيف أحصل على التحديثات؟</h3>
-    <p>يتولى CapsBridge ذلك بنفسه. فهو يتحقق من وجود تحديثات مرة واحدة يوميًا، ويعرض ما الجديد بلغتك، ثم يثبّت التحديث حين تختار ذلك. وكل تحديث موقّع، ولا يُثبَّت إلا إذا كان من المطوّر نفسه.</p>
-
-    <h3>هل فتحه آمن؟</h3>
-    <p>التطبيق موقّع بمعرّف مطوّر من Apple وموثّق منها، وشيفرته كلها منشورة.</p>
+    <h3>كيف أحدّثه؟</h3>
+    <p>لا حاجة لذلك، فهو يتحقق من وجود التحديثات ويثبّتها بنفسه.</p>
   </section>
 </main>
 
 <footer class="wrap">
-  <p>من تطوير عبدالمجيد المرزوقي. منشور برخصة MIT.</p>
+  <p>من تطوير عبدالمجيد المرزوقي. برخصة MIT.</p>
   <p><a href="https://github.com/AbdulmajeedAlmarzoqi/CapsBridge/issues">الإبلاغ عن مشكلة</a></p>
-  <p>لا يتبع CapsBridge لشركة VMPal ولا TablePlus ولا NV Access.</p>
 </footer>
 </body>
 </html>
