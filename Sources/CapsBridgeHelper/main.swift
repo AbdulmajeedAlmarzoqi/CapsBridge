@@ -26,6 +26,7 @@ final class Helper {
     private var activeMachine: BridgeMachine?
     private var reportedStatus: HelperStatus?
     private var signalSources: [DispatchSourceSignal] = []
+    private lazy var updates = UpdateWatcher(store: store)
 
     func start() {
         let workspace = NSWorkspace.shared
@@ -58,6 +59,11 @@ final class Helper {
             signalSources.append(source)
         }
 
+        updates.isUserAvailable = { [weak self] in
+            guard let self else { return false }
+            return pauses.isEmpty && !Self.isVirtualMachine(NSWorkspace.shared.frontmostApplication?.bundleIdentifier)
+        }
+        updates.start()
         updateForFrontmostApplication()
     }
 
@@ -99,6 +105,13 @@ final class Helper {
             activeMachine = nil
         }
         report()
+        // An update waits while the user works in a VM, or isn't at the Mac.
+        updates.userIsAvailable(pauses.isEmpty && !Self.isVirtualMachine(bundleIdentifier))
+    }
+
+    private static func isVirtualMachine(_ bundleIdentifier: String?) -> Bool {
+        bundleIdentifier == CapsBridgeIdentifiers.vmpalMachine
+            || bundleIdentifier?.hasPrefix(CapsBridgeIdentifiers.vmpalMachineStubPrefix) == true
     }
 
     private func reloadConfigurationIfChanged() {

@@ -13,6 +13,7 @@ export DEVELOPER_DIR=${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Developer
 
 MODE=${1:-release}
 VERSION=$(sed -n 's/^ *MARKETING_VERSION: *"\(.*\)"/\1/p' project.yml)
+BUILD=$(sed -n 's/^ *CURRENT_PROJECT_VERSION: *"\(.*\)"/\1/p' project.yml)
 PROJECT=CapsBridge.xcodeproj
 SCHEME=CapsBridge
 ARCHIVE=build/CapsBridge.xcarchive
@@ -47,6 +48,11 @@ release) ;;
 	echo "usage: $0 [release|dev|ci]" >&2
 	exit 2 ;;
 esac
+
+[ -f "ReleaseNotes/$VERSION/en.md" ] && [ -f "ReleaseNotes/$VERSION/ar.md" ] ||
+	{ echo "Write the release notes first: ReleaseNotes/$VERSION/en.md and ar.md" >&2; exit 1; }
+[ -f "$HOME/.capsbridge-release/sparkle-ed25519-private.key" ] ||
+	{ echo "The update signing key isn't in ~/.capsbridge-release; see the readme's Releasing section" >&2; exit 1; }
 
 echo "==> Archiving CapsBridge $VERSION"
 rm -rf "$ARCHIVE" build/export build/notarized build/CapsBridge.app build/notarize.log
@@ -96,4 +102,8 @@ ZIP="build/CapsBridge-$VERSION.zip"
 rm -f "$ZIP" "$ZIP.sha256"
 ditto -c -k --keepParent "$APP" "$ZIP"
 shasum -a 256 "$ZIP" | tee "$ZIP.sha256"
-echo "==> Done: build/CapsBridge.app and $ZIP"
+
+echo "==> Adding CapsBridge $VERSION ($BUILD) to the update feed"
+python3 scripts/appcast.py --version "$VERSION" --build "$BUILD" --archive "$ZIP"
+echo "==> Done: build/CapsBridge.app, $ZIP, and docs/appcast.xml"
+echo "    Publish the zip as the GitHub release v$VERSION first, then push docs/appcast.xml."

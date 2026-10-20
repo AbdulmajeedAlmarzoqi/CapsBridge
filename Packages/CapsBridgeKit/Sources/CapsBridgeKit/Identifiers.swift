@@ -8,6 +8,12 @@ public enum CapsBridgeIdentifiers {
     public static let helperPropertyList = helper + ".plist"
     /// Posted by the app after it rewrites the configuration, so the helper picks it up at once.
     public static let configurationChanged = Notification.Name(app + ".configurationChanged")
+    /// Posted by the helper when it found an update, for an app that's already open to show it.
+    public static let updateAvailable = Notification.Name(app + ".updateAvailable")
+    /// The argument the helper opens the app with when it found an update.
+    public static let showUpdateArgument = "--show-update"
+    /// A defaults key that points the app and the helper at another update feed, for trying a release before it's published.
+    public static let updateFeedOverrideKey = "UpdateFeedURL"
 
     public static let vmpal = "com.tableplus.VMPal"
     /// The process that runs a VM and owns its window.

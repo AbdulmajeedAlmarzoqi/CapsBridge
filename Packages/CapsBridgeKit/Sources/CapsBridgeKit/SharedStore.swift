@@ -106,6 +106,15 @@ public struct SharedStore: Sendable {
     public var configurationURL: URL { directory.appendingPathComponent("configuration.json") }
     public var helperStatusURL: URL { directory.appendingPathComponent("helper-status.json") }
     public var displacedMappingsURL: URL { directory.appendingPathComponent("displaced-key-mappings.json") }
+    public var updateCheckURL: URL { directory.appendingPathComponent("update-check.json") }
+
+    public func loadUpdateCheckState() -> UpdateCheckState {
+        load(UpdateCheckState.self, from: updateCheckURL) ?? UpdateCheckState()
+    }
+
+    public func save(_ state: UpdateCheckState) {
+        try? write(state, to: updateCheckURL)
+    }
 
     public func loadConfiguration() -> BridgeConfiguration {
         load(BridgeConfiguration.self, from: configurationURL) ?? BridgeConfiguration()

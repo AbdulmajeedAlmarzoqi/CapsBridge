@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Updates: the feed, the key every update and the feed itself are signed with, and the checks. -->
+	<key>SUFeedURL</key>
+	<string>https://abdulmajeedalmarzoqi.github.io/CapsBridge/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>5JeX2/LEWMtZeoagQLwoOCRn4eIkLPMPj7/+eE1wFpc=</string>
+	<key>SURequireSignedFeed</key>
+	<true/>
+	<key>SUVerifyUpdateBeforeExtraction</key>
+	<true/>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>SUScheduledCheckInterval</key>
+	<integer>86400</integer>
+	<key>SUAllowsAutomaticUpdates</key>
+	<true/>
+</dict>
+</plist>

@@ -8,15 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		088B511A9761D92264A3665E /* HelperController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E023B13646F5999F597CFA4B /* HelperController.swift */; };
+		228031A642EFCCAD948BCF9A /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 6F779670D7C57372E8F8FE9A /* Sparkle */; };
+		2CFB12C10EE89F78B360FFA6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B03862AD47D01694D47A1EB /* SettingsView.swift */; };
 		66AFE7710B085E815F30278A /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 73F6FB0073A901527C418CA1 /* AppIcon.icon */; };
 		7DD4CCA0DCBBC1F89BE3987A /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = FEA6D2942C8659459A258D23 /* Localizable.xcstrings */; };
 		80E16E9B43ED2AA75C996022 /* CapsBridgeHelper.app in Embed Dependencies */ = {isa = PBXBuildFile; fileRef = 9B60A0B560305DDD83FAFE16 /* CapsBridgeHelper.app */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8350EB550345E967F93FAA6E /* CapsBridgeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 21067992C1EFB075BAF47AB4 /* CapsBridgeKit */; };
+		8627C43FF256913C4A363A25 /* UpdateWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EA5CE06F88A1909668A533 /* UpdateWatcher.swift */; };
 		87EFC9D91168CD4CFF0F10A7 /* AppLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182E3CECB7917B3857FA002B /* AppLocation.swift */; };
 		8A278D0B32685EE02703C1F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97A0F6635B86CC220C626405 /* Assets.xcassets */; };
 		99793B9D20351204C977E85D /* com.abdulmajeedalmarzoqi.capsbridge.helper.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 26FF84544386FB322550FF5F /* com.abdulmajeedalmarzoqi.capsbridge.helper.plist */; };
 		9AE7BF1EDBB911CA0330CF88 /* CapsBridgeKit in Frameworks */ = {isa = PBXBuildFile; productRef = B65A6A315D1A614F5FC351D7 /* CapsBridgeKit */; };
 		C6A647F140C4F8B7A2C0C250 /* CapsBridgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB0576E10FF03365B3AE8F7 /* CapsBridgeApp.swift */; };
+		CD67A32E914525908DAE4829 /* UpdateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC1732807CFA080389D17BE /* UpdateController.swift */; };
 		CF59D8206607DAF9AF6F5246 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8BC93A7AA3410FA1A513D5 /* main.swift */; };
 		E496D6029284488EC720CEC8 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC852C1591520B43B68930BD /* AppModel.swift */; };
 		E60AC7475E5DADEEB9938DB0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF4199B924B5B2DA37F3430B /* ContentView.swift */; };
@@ -62,12 +66,15 @@
 		26FF84544386FB322550FF5F /* com.abdulmajeedalmarzoqi.capsbridge.helper.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = com.abdulmajeedalmarzoqi.capsbridge.helper.plist; sourceTree = "<group>"; };
 		3037B2EA7F5588F4B74C496F /* CapsBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CapsBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73F6FB0073A901527C418CA1 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = AppIcon.icon; sourceTree = "<group>"; };
+		8CC1732807CFA080389D17BE /* UpdateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateController.swift; sourceTree = "<group>"; };
 		97A0F6635B86CC220C626405 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9B03862AD47D01694D47A1EB /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		9B60A0B560305DDD83FAFE16 /* CapsBridgeHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CapsBridgeHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6D9E2A120B2BFFEBFEF28F2 /* Inspection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inspection.swift; sourceTree = "<group>"; };
 		CE8BC93A7AA3410FA1A513D5 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		DD57B65C80859845F9D34A5E /* CapsBridgeKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CapsBridgeKit; path = Packages/CapsBridgeKit; sourceTree = SOURCE_ROOT; };
 		E023B13646F5999F597CFA4B /* HelperController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperController.swift; sourceTree = "<group>"; };
+		E5EA5CE06F88A1909668A533 /* UpdateWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateWatcher.swift; sourceTree = "<group>"; };
 		EC852C1591520B43B68930BD /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		EEB0576E10FF03365B3AE8F7 /* CapsBridgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsBridgeApp.swift; sourceTree = "<group>"; };
 		EF4199B924B5B2DA37F3430B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -88,6 +95,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AE7BF1EDBB911CA0330CF88 /* CapsBridgeKit in Frameworks */,
+				228031A642EFCCAD948BCF9A /* Sparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,6 +111,8 @@
 				EF4199B924B5B2DA37F3430B /* ContentView.swift */,
 				E023B13646F5999F597CFA4B /* HelperController.swift */,
 				B6D9E2A120B2BFFEBFEF28F2 /* Inspection.swift */,
+				9B03862AD47D01694D47A1EB /* SettingsView.swift */,
+				8CC1732807CFA080389D17BE /* UpdateController.swift */,
 			);
 			path = CapsBridge;
 			sourceTree = "<group>";
@@ -158,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				CE8BC93A7AA3410FA1A513D5 /* main.swift */,
+				E5EA5CE06F88A1909668A533 /* UpdateWatcher.swift */,
 			);
 			path = CapsBridgeHelper;
 			sourceTree = "<group>";
@@ -182,6 +193,7 @@
 				E16D583504D5F03B0C2C815C /* CopyFiles */,
 				57D040D6A78E0DF4A9632CB2 /* Frameworks */,
 				E4A7418CB0BFF05D601F2B29 /* Embed Dependencies */,
+				7B0D8AF6366BF1DA90DD1EA9 /* Complete Sparkle's Arabic localization */,
 			);
 			buildRules = (
 			);
@@ -191,6 +203,7 @@
 			name = CapsBridge;
 			packageProductDependencies = (
 				B65A6A315D1A614F5FC351D7 /* CapsBridgeKit */,
+				6F779670D7C57372E8F8FE9A /* Sparkle */,
 			);
 			productName = CapsBridge;
 			productReference = 3037B2EA7F5588F4B74C496F /* CapsBridge.app */;
@@ -244,6 +257,7 @@
 			mainGroup = 1A81C7F0375784341F9BF127;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				BF663C92F29530B95320C59C /* XCRemoteSwiftPackageReference "Sparkle" */,
 				D36D0BE564077687B91971DD /* XCLocalSwiftPackageReference "Packages/CapsBridgeKit" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -270,6 +284,29 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		7B0D8AF6366BF1DA90DD1EA9 /* Complete Sparkle's Arabic localization */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Resources/Sparkle/ar.lproj/Sparkle.strings",
+			);
+			name = "Complete Sparkle's Arabic localization";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Sparkle.framework/Versions/B/Resources/ar.lproj/Sparkle.strings",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/scripts/complete-sparkle-localization.sh\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8E53E3694FCF7D972BDFDEAA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -281,6 +318,8 @@
 				E60AC7475E5DADEEB9938DB0 /* ContentView.swift in Sources */,
 				088B511A9761D92264A3665E /* HelperController.swift in Sources */,
 				ECAC55594B5F14F906D8A25D /* Inspection.swift in Sources */,
+				2CFB12C10EE89F78B360FFA6 /* SettingsView.swift in Sources */,
+				CD67A32E914525908DAE4829 /* UpdateController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,6 +327,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8627C43FF256913C4A363A25 /* UpdateWatcher.swift in Sources */,
 				CF59D8206607DAF9AF6F5246 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -488,7 +528,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CapsBridge;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Abdulmajeed Almarzoqi";
@@ -505,7 +547,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CapsBridge;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Abdulmajeed Almarzoqi";
@@ -555,10 +599,26 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		BF663C92F29530B95320C59C /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		21067992C1EFB075BAF47AB4 /* CapsBridgeKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CapsBridgeKit;
+		};
+		6F779670D7C57372E8F8FE9A /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF663C92F29530B95320C59C /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
 		};
 		B65A6A315D1A614F5FC351D7 /* CapsBridgeKit */ = {
 			isa = XCSwiftPackageProductDependency;

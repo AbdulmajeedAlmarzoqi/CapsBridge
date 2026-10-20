@@ -25,6 +25,12 @@ You don't need to keep the app open. A small helper does the work in the backgro
 
 The app is in English and Arabic, and built to be used with VoiceOver.
 
+## Updates
+
+CapsBridge keeps itself up to date. Once a day it checks for a new version, even while only its helper is running, and waits until you're back on the Mac rather than interrupting your work in Windows. It then shows what's new, in English or Arabic, and installs the update when you choose Install Update. You can check at any time with CapsBridge > Check for Updates…, and turn the checks off, or have updates installed without asking, in CapsBridge > Settings.
+
+Updates are delivered with [Sparkle](https://sparkle-project.org). The update feed and every update are signed, and an update is installed only if it's signed by the same developer as the copy you have.
+
 ## Removing it
 
 Press **Remove CapsBridge…** in the app. It takes the key mapping out of Windows, puts NVDA's setting back the way it found it, removes its helper from the Mac, and offers to move the app to the Trash. Windows goes back to its usual Caps Lock at its next restart.
@@ -93,8 +99,19 @@ The code is in three parts:
 - `Packages/CapsBridgeKit` is everything that isn't interface: the key mapping, VMPal's command line, the `Scancode Map`, NVDA's configuration file. Its tests run with `swift test --package-path Packages/CapsBridgeKit`.
 - `Sources/CapsBridgeHelper` is the background helper.
 - `Sources/CapsBridge` is the app.
+- `ReleaseNotes` holds each version's notes, and `scripts/appcast.py` builds the update feed from them.
 
 After changing text in the app, `./scripts/check-localization.py` says what's missing from the Arabic translation.
+
+## Releasing
+
+1. Raise `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` in `project.yml`. The build number has to go up with every release: it's what the updater compares.
+2. Write the release notes in `ReleaseNotes/<version>/en.md` and `ar.md`, in Markdown.
+3. Run `./scripts/build.sh`. It notarizes the app, zips it, and adds the release to `docs/appcast.xml`, signing the archive and the feed with the update key.
+4. Publish the zip: `gh release create v<version> build/CapsBridge-<version>.zip build/CapsBridge-<version>.zip.sha256`.
+5. Commit and push `docs/appcast.xml` and `ReleaseNotes/releases.json`. Installed copies find the update within a day.
+
+The update key's private half is in the login keychain (account `capsbridge`) and in `~/.capsbridge-release`; it never goes into the repository. Keep a backup of it somewhere safe: without it, no update can be published to the copies people have. To try a release before publishing it, point an installed copy at another feed with `defaults write com.abdulmajeedalmarzoqi.capsbridge UpdateFeedURL <url>`, and remove the setting afterwards.
 
 ## License
 

@@ -5,6 +5,7 @@ import SwiftUI
 struct CapsBridgeApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
     private var model: AppModel { delegate.model }
+    private var updates: UpdateController { delegate.updates }
 
     var body: some Scene {
         Window("CapsBridge", id: "main") {
@@ -12,6 +13,12 @@ struct CapsBridgeApp: App {
         }
         .windowResizability(.contentSize)
         .commands {
+            CommandGroup(after: .appInfo) {
+                Button("Check for Updates…") {
+                    updates.checkForUpdates()
+                }
+                .disabled(!updates.canCheckForUpdates)
+            }
             CommandGroup(replacing: .newItem) {}
             CommandGroup(after: .toolbar) {
                 Button("Check Again") {
@@ -29,12 +36,24 @@ struct CapsBridgeApp: App {
                 }
             }
         }
+
+        Settings {
+            SettingsView(updates: updates)
+        }
     }
 }
 
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     let model = AppModel()
+    let updates = UpdateController()
+
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        // The helper opens the app this way when it found an update while the app was closed.
+        if CommandLine.arguments.contains(CapsBridgeIdentifiers.showUpdateArgument) {
+            updates.showAvailableUpdate()
+        }
+    }
 
     /// The window is the app: closing it quits. The helper runs on its own.
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {

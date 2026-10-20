@@ -201,6 +201,16 @@
         }
       }
     },
+    "CapsBridge checks for updates once a day, including while only its helper is running. When an update is available, its release notes are shown before anything is installed, unless updates are installed automatically." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يتحقق CapsBridge من وجود تحديثات مرة واحدة يوميًا، حتى عندما يعمل مساعده وحده. وعند توفر تحديث تُعرض ملاحظات الإصدار قبل تثبيت أي شيء، ما لم تكن التحديثات تُثبَّت تلقائيًا."
+          }
+        }
+      }
+    },
     "CapsBridge could not be moved to the Applications folder. %@" : {
       "localizations" : {
         "ar" : {
@@ -267,6 +277,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "التحقق مرة أخرى"
+          }
+        }
+      }
+    },
+    "Check for Updates Now" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التحقق من وجود تحديثات الآن"
+          }
+        }
+      }
+    },
+    "Check for Updates…" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التحقق من وجود تحديثات…"
+          }
+        }
+      }
+    },
+    "Check for updates automatically" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التحقق من وجود تحديثات تلقائيًا"
           }
         }
       }
@@ -387,6 +427,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "عدم النقل"
+          }
+        }
+      }
+    },
+    "Download and install updates automatically" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تنزيل التحديثات وتثبيتها تلقائيًا"
           }
         }
       }
@@ -997,6 +1047,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "جارٍ تفعيل Caps Lock مفتاحَ تعديل في NVDA…"
+          }
+        }
+      }
+    },
+    "Updates" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التحديثات"
           }
         }
       }
