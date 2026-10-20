@@ -35,6 +35,10 @@ targets:
     sources:
       - path: Sources/CapsBridge
       - path: Resources/Assets.xcassets
+      # Made in Icon Composer's format, which macOS renders as Liquid Glass in every appearance.
+      - path: Resources/AppIcon.icon
+        type: file
+        buildPhase: resources
       - path: Resources/Localizable.xcstrings
       # macOS looks for the helper's launchd property list here when the app registers it as a login item.
       - path: Resources/LaunchAgents/com.abdulmajeedalmarzoqi.capsbridge.helper.plist

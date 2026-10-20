@@ -133,6 +133,19 @@ import Testing
         #expect(store.loadConfiguration() == BridgeConfiguration())
     }
 
+    @Test func keepsDisplacedKeyMappingsUntilTheyAreBack() throws {
+        let store = SharedStore(directory: FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString))
+        defer { try? store.removeAll() }
+        let capsLockAsEscape = KeyMapping(source: HIDKey.capsLock, destination: 0x7_0000_0029)
+
+        store.saveDisplacedMappings([capsLockAsEscape])
+        #expect(store.loadDisplacedMappings() == [capsLockAsEscape])
+
+        store.saveDisplacedMappings([])
+        #expect(store.loadDisplacedMappings().isEmpty)
+        #expect(!FileManager.default.fileExists(atPath: store.displacedMappingsURL.path))
+    }
+
     @Test func readsAFileWrittenWithFewerFields() throws {
         let configuration = try JSONDecoder().decode(BridgeConfiguration.self, from: Data(#"{"machines":[]}"#.utf8))
         #expect(configuration == BridgeConfiguration())

@@ -1,4 +1,5 @@
 import AppKit
+import CapsBridgeKit
 
 /// Where this copy of the app runs from. The helper is started from inside the app, so the app
 /// has to stay in one place, and macOS runs an app opened straight from a download in a
@@ -20,23 +21,31 @@ enum AppLocation {
 
     static var shouldOfferToMove: Bool { !isInApplications && !isDevelopmentBuild }
 
-    /// Copies the app into /Applications, in place of a copy that's there, and returns the new copy.
-    static func copyToApplications() throws -> URL {
-        let destination = URL(fileURLWithPath: "/Applications").appendingPathComponent(bundleURL.lastPathComponent)
+    /// Copies the app into the Applications folder, in place of a copy that's there, opens the new
+    /// copy, and quits. Nothing changes in the Applications folder unless the whole copy succeeded.
+    static func moveToApplicationsAndRelaunch() async throws {
         let manager = FileManager.default
-        if manager.fileExists(atPath: destination.path) {
-            try manager.trashItem(at: destination, resultingItemURL: nil)
+        let folder = URL(fileURLWithPath: "/Applications", isDirectory: true)
+        let destination = folder.appendingPathComponent("CapsBridge.app")
+        let staging = folder.appendingPathComponent(".CapsBridge-\(UUID().uuidString).app")
+        try manager.copyItem(at: bundleURL, to: staging)
+        do {
+            // A copy keeps the download's quarantine, and macOS would run it from a temporary place again.
+            _ = try? await ProcessRunner.run(URL(fileURLWithPath: "/usr/bin/xattr"), arguments: ["-dr", "com.apple.quarantine", staging.path])
+            if manager.fileExists(atPath: destination.path) {
+                _ = try manager.replaceItemAt(destination, withItemAt: staging)
+            } else {
+                try manager.moveItem(at: staging, to: destination)
+            }
+        } catch {
+            try? manager.removeItem(at: staging)
+            throw error
         }
-        try manager.copyItem(at: bundleURL, to: destination)
-        return destination
-    }
 
-    static func relaunch(at url: URL) {
         let configuration = NSWorkspace.OpenConfiguration()
         configuration.createsNewApplicationInstance = true
-        NSWorkspace.shared.openApplication(at: url, configuration: configuration) { _, _ in
-            Task { @MainActor in NSApp.terminate(nil) }
-        }
+        _ = try await NSWorkspace.shared.openApplication(at: destination, configuration: configuration)
+        NSApp.terminate(nil)
     }
 
     static func moveToTrashAndQuit() {

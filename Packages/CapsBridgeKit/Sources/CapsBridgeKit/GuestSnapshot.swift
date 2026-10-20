@@ -19,8 +19,10 @@ public struct GuestSnapshot: Decodable, Equatable, Sendable {
     public var nvdaVersion: String?
     public var nvdaRunning: Bool
     public var nvdaConfigPath: String
-    /// The whole of `nvda.ini` in Base64, when the file exists.
+    /// The whole of `nvda.ini` in Base64, when the file exists and could be read.
     public var nvdaConfig: String?
+    /// Whether `nvda.ini` exists, read or not.
+    public var nvdaConfigExists: Bool?
 
     /// The probe prints its JSON in Base64, so no code page stands between Windows and the Mac.
     public init(probeOutput: String) throws {
@@ -59,10 +61,20 @@ public struct GuestSnapshot: Decodable, Equatable, Sendable {
         return config.capsLockIsNVDAKey ? .capsLockOn : .capsLockOff
     }
 
+    /// The bytes of `nvda.ini`, when it exists and could be read.
+    public var nvdaConfigData: Data? {
+        nvdaConfig.flatMap { Data(base64Encoded: $0) }
+    }
+
     /// NVDA's configuration, or an empty one when NVDA hasn't written its file yet.
     public func nvdaConfiguration() throws -> NVDAConfig {
-        guard let nvdaConfig else { return NVDAConfig(text: "") }
-        guard let data = Data(base64Encoded: nvdaConfig) else { throw NVDAConfig.ReadError.notUTF8 }
+        guard let nvdaConfig else {
+            // A file that's there but couldn't be read is never taken for a missing one: writing an
+            // empty configuration over it would lose everything the user set in NVDA.
+            if nvdaConfigExists ?? false { throw NVDAConfig.ReadError.notReadable }
+            return NVDAConfig(text: "")
+        }
+        guard let data = Data(base64Encoded: nvdaConfig) else { throw NVDAConfig.ReadError.notReadable }
         return try NVDAConfig(data: data)
     }
 
@@ -81,7 +93,11 @@ public enum GuestError: Error, Equatable, Sendable {
     case scriptFailed(String)
     case unreadableProbe
     case nvdaStillRunning
+    /// NVDA was quit to change its settings and didn't start again.
+    case nvdaNotRestarted
     case nvdaConfigUnreadable
+    /// `nvda.ini` changed between reading and writing it, so it was left as it was.
+    case nvdaConfigChanged
 }
 
 enum GuestScripts {
@@ -102,14 +118,15 @@ enum GuestScripts {
         }
     }
     $configPath = Join-Path $env:APPDATA 'nvda\nvda.ini'
+    $configExists = Test-Path -LiteralPath $configPath
     $config = $null
-    if (Test-Path -LiteralPath $configPath) {
-        $config = [Convert]::ToBase64String([IO.File]::ReadAllBytes($configPath))
+    if ($configExists) {
+        try { $config = [Convert]::ToBase64String([IO.File]::ReadAllBytes($configPath)) } catch { $config = $null }
     }
 
     $answer = [ordered]@{
         build = "$($version.CurrentBuild).$($version.UBR)"
-        scancodeMap = if ($map) { ($map | ForEach-Object { $_.ToString('X2') }) -join '' } else { $null }
+        scancodeMap = if ($map -is [byte[]]) { ($map | ForEach-Object { $_.ToString('X2') }) -join '' } else { $null }
         marked = Test-Path 'HKLM:\SOFTWARE\CapsBridge'
         awaitingRestart = Test-Path 'HKLM:\SOFTWARE\CapsBridge\AwaitingRestart'
         replacedMapping = $marker.ReplacedMapping
@@ -120,11 +137,14 @@ enum GuestScripts {
         nvdaRunning = [bool](Get-Process -Name nvda)
         nvdaConfigPath = $configPath
         nvdaConfig = $config
+        nvdaConfigExists = $configExists
     }
     [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes(($answer | ConvertTo-Json -Compress)))
     """#
 
     /// Wraps a script that changes something: any error stops it and goes to standard error as plain text.
+    /// It ends with an explicit success, since PowerShell would otherwise report the failure of a last
+    /// command whose error was deliberately ignored.
     static func failing(_ body: String) -> String {
         """
         $ErrorActionPreference = 'Stop'
@@ -135,8 +155,12 @@ enum GuestScripts {
             [Console]::Error.WriteLine($_.Exception.Message)
             exit 1
         }
+        exit 0
         """
     }
+
+    /// What the script that writes `nvda.ini` says when the file changed after it was read.
+    static let changedMarker = "CapsBridge: the configuration changed"
 
     /// A PowerShell single-quoted literal.
     static func quoted(_ text: String) -> String {

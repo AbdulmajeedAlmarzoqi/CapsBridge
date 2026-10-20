@@ -41,7 +41,14 @@ final class AppModel {
     private let logger = Logger(subsystem: CapsBridgeIdentifiers.app, category: "app")
     private var lastRefresh = Date.distantPast
     private var quietRefresh: Task<Void, Never>?
+    private var shownListingFailure: String?
+    private var helperRecovery: Task<Void, Never>?
     private var hasStarted = false
+    /// Set when the user quit while the app was working: it quits as soon as the work is done.
+    var quitWhenDone = false
+
+    /// Whether the user can start something: nothing is under way and no question is waiting.
+    var canAct: Bool { activity == .idle && prompt == nil }
 
     // MARK: - What the window shows
 
@@ -52,15 +59,16 @@ final class AppModel {
     var checks: [Check] { inspection.checks }
 
     var headline: String {
-        if isStarting { return String(localized: "Checking this Mac and Windows…") }
+        if isStarting { return String(localized: "Checking configuration…") }
         switch summary {
-        case .vmpalMissing: return String(localized: "VMPal isn't installed")
-        case .noWindowsMachine: return String(localized: "No Windows virtual machine yet")
-        case .notSetUp: return String(localized: "Caps Lock isn't set up yet")
-        case .needsAttention: return String(localized: "Something needs fixing")
-        case .restartNeeded: return String(localized: "Restart Windows to finish")
-        case .startNeeded: return String(localized: "Start Windows to finish")
-        case .ready: return String(localized: "Caps Lock is ready")
+        case .vmpalMissing: return String(localized: "VMPal is not installed")
+        case .vmpalNotResponding: return String(localized: "VMPal is not responding")
+        case .noWindowsMachine: return String(localized: "No Windows virtual machine was found")
+        case .notSetUp: return String(localized: "CapsBridge is not set up")
+        case .needsAttention: return String(localized: "Some items need attention")
+        case .restartNeeded: return String(localized: "Restart Windows to complete setup")
+        case .startNeeded: return String(localized: "Start Windows to complete setup")
+        case .ready: return String(localized: "Caps Lock is ready to use")
         }
     }
 
@@ -68,26 +76,28 @@ final class AppModel {
         if isStarting { return "" }
         switch summary {
         case .vmpalMissing:
-            return String(localized: "CapsBridge works with Windows virtual machines in VMPal. Install VMPal, create a Windows virtual machine, then open CapsBridge again.")
+            return String(localized: "CapsBridge requires VMPal and a Windows virtual machine. Install VMPal, create a Windows virtual machine, and then open CapsBridge again.")
+        case .vmpalNotResponding:
+            return String(localized: "Make sure VMPal is running, and then check again.")
         case .noWindowsMachine:
-            return String(localized: "Create a Windows virtual machine in VMPal, then check again.")
+            return String(localized: "Create a Windows virtual machine in VMPal, and then check again.")
         case .notSetUp:
-            return String(localized: "Set Up prepares this Mac and Windows, so you can hold Caps Lock as your screen reader's key.")
+            return String(localized: "Set up CapsBridge to use Caps Lock as the screen reader modifier key in Windows.")
         case .needsAttention:
-            return String(localized: "Fix takes care of what's marked below.")
+            return String(localized: "Click Fix to resolve the items that need attention.")
         case .restartNeeded:
-            return String(localized: "Windows learns the Caps Lock key when it starts. Save your work in Windows first.")
+            return String(localized: "Windows applies the Caps Lock mapping when it restarts. Save any open documents in Windows before restarting.")
         case .startNeeded:
-            return String(localized: "The setup completes when Windows starts.")
+            return String(localized: "Setup completes the next time Windows starts.")
         case .ready:
-            return String(localized: "In Windows, hold Caps Lock as your screen reader's key. Press it twice quickly to turn Caps Lock on or off.")
+            return String(localized: "In Windows, hold Caps Lock as the screen reader modifier key. To turn Caps Lock on or off, press it twice quickly.")
         }
     }
 
     var primaryTitle: String {
         switch summary {
         case .vmpalMissing: String(localized: "Get VMPal")
-        case .noWindowsMachine, .ready: String(localized: "Check Again")
+        case .noWindowsMachine, .vmpalNotResponding, .ready: String(localized: "Check Again")
         case .notSetUp: String(localized: "Set Up")
         case .needsAttention: String(localized: "Fix")
         case .restartNeeded: String(localized: "Restart Windows")
@@ -109,34 +119,40 @@ final class AppModel {
         guard !hasStarted else { return }
         let direction = NSApp.userInterfaceLayoutDirection == .rightToLeft ? "right to left" : "left to right"
         note("Language \(Bundle.main.preferredLocalizations.first ?? "?"), \(direction)")
-        if AppLocation.shouldOfferToMove {
-            let move = await ask(
-                title: String(localized: "Move CapsBridge to the Applications folder?"),
-                message: String(localized: "CapsBridge runs a small helper from inside the app, so the app needs to stay in one place."),
-                confirm: String(localized: "Move to Applications"),
-                cancel: String(localized: "Not Now"))
-            if move {
-                do {
-                    AppLocation.relaunch(at: try AppLocation.copyToApplications())
-                    return
-                } catch {
-                    failure = String(localized: "CapsBridge couldn't be moved to the Applications folder: \(error.localizedDescription)")
-                }
-            }
-        }
+        if AppLocation.shouldOfferToMove, await offerToMove() { return }
         await refresh()
         hasStarted = true
         announce(headline)
     }
 
+    /// Asks to move the app into the Applications folder, and moves it. Returns whether it's on its way
+    /// there: the copy in the Applications folder is opened, and this one quits.
+    private func offerToMove() async -> Bool {
+        let move = await ask(
+            title: String(localized: "Move CapsBridge to the Applications folder?"),
+            message: String(localized: "CapsBridge runs a helper from within the app, so the app must remain in the Applications folder."),
+            confirm: String(localized: "Move to Applications Folder"),
+            cancel: String(localized: "Don’t Move"))
+        guard move else { return false }
+        do {
+            try await AppLocation.moveToApplicationsAndRelaunch()
+            return true
+        } catch {
+            note("Moving failed: \(error)")
+            failure = String(localized: "CapsBridge could not be moved to the Applications folder. \(error.localizedDescription)")
+            return false
+        }
+    }
+
     /// Checks again when the user comes back to the app, as after restarting Windows by hand.
     /// It runs behind the window as it is: the buttons stay usable, and what they start waits for it.
     func refreshAfterReturning() {
-        guard hasStarted, activity == .idle, quietRefresh == nil, Date().timeIntervalSince(lastRefresh) > 15 else { return }
+        guard hasStarted, canAct, quietRefresh == nil, Date().timeIntervalSince(lastRefresh) > 15 else { return }
         quietRefresh = Task {
             let before = summary
+            let selection = selectedMachineID
             let inspection = await inspect()
-            if activity == .idle {
+            if canAct, selectedMachineID == selection {
                 show(inspection)
                 if summary != before { announce(headline) }
             }
@@ -145,7 +161,7 @@ final class AppModel {
     }
 
     func checkAgain() async {
-        guard activity == .idle else { return }
+        guard canAct else { return }
         failure = nil
         await refresh()
         announce(headline)
@@ -162,6 +178,14 @@ final class AppModel {
         self.inspection = inspection
         selectedMachineID = inspection.machine?.id
         lastRefresh = Date()
+        // A problem reaching VMPal is shown until a check gets through; the failure of an action stays.
+        if let problem = inspection.listingFailure {
+            failure = problem
+            shownListingFailure = problem
+        } else if let shown = shownListingFailure, failure == shown {
+            failure = nil
+            shownListingFailure = nil
+        }
         note("Checked: \(inspection.summary), helper \(inspection.helper), reach \(inspection.reach)")
     }
 
@@ -176,7 +200,6 @@ final class AppModel {
             let vmpal = VMPalCommandLine(installation: installation)
             do {
                 let machines = try await vmpal.machines()
-                inspection.configuration = forgettingDeletedMachines(in: inspection.configuration, listed: machines)
                 inspection.windowsMachines = machines.filter { $0.isWindows && $0.installed != false }
                 inspection.machine = preferredMachine(in: inspection)
                 if let machine = inspection.machine, machine.isRunning, machine.allowsControl {
@@ -187,7 +210,7 @@ final class AppModel {
                 }
             } catch {
                 note("Listing VMs failed: \(error)")
-                failure = message(for: error)
+                inspection.listingFailure = message(for: error)
             }
         }
 
@@ -225,15 +248,27 @@ final class AppModel {
             try? await helper.ensureRunning()
             inspection.helper = helper.state()
             note("Helper restarted: now \(inspection.helper)")
+            if inspection.helper != .running, inspection.helper != .needsApproval { recoverHelperLater() }
         }
     }
 
-    private func forgettingDeletedMachines(in configuration: BridgeConfiguration, listed: [VirtualMachine]) -> BridgeConfiguration {
-        var configuration = configuration
-        for machine in configuration.machines + configuration.awaitingRestart where !listed.contains(where: { machine.hasID($0.id) }) {
-            configuration.forget(machineID: machine.id)
+    /// Keeps trying to start the helper for a few minutes. Right after the app was replaced by a copy
+    /// signed otherwise, the system takes a minute or two before it lets the new helper start.
+    private func recoverHelperLater() {
+        guard helperRecovery == nil else { return }
+        helperRecovery = Task {
+            defer { helperRecovery = nil }
+            for _ in 0..<12 {
+                try? await Task.sleep(for: .seconds(15))
+                if Task.isCancelled { return }
+                guard canAct else { continue }
+                if helper.state() != .running { try? await helper.ensureRunning() }
+                guard helper.state() == .running else { continue }
+                note("Helper recovered")
+                if canAct { show(await inspect()) }
+                return
+            }
         }
-        return configuration
     }
 
     /// The VM chosen in the window, else one that was set up, else one that runs, else the first.
@@ -249,11 +284,11 @@ final class AppModel {
     // MARK: - Setting up
 
     func performPrimaryAction() async {
-        guard activity == .idle else { return }
+        guard canAct else { return }
         switch summary {
         case .vmpalMissing:
             NSWorkspace.shared.open(CapsBridgeLinks.vmpal)
-        case .noWindowsMachine, .ready:
+        case .noWindowsMachine, .vmpalNotResponding, .ready:
             await checkAgain()
         case .notSetUp, .needsAttention, .startNeeded:
             await setUp(restartConfirmed: false)
@@ -267,53 +302,67 @@ final class AppModel {
         guard let installation = inspection.installation, var machine = inspection.machine else { return }
         let vmpal = VMPalCommandLine(installation: installation)
 
+        if AppLocation.shouldOfferToMove {
+            guard await offerToMove() else {
+                failure = String(localized: "To set up CapsBridge, move it to the Applications folder.")
+                announce(failure ?? "")
+                return
+            }
+            return
+        }
+
         await work {
-            step(String(localized: "Installing the helper on this Mac…"))
+            step(String(localized: "Installing the helper…"))
             try await ensureHelper()
 
+            // Set up before and shut down since: only the helper needed attention, and Windows is
+            // checked again when it runs.
+            if !machine.isRunning, inspection.isEnabled, !restartConfirmed { return }
+
             if !machine.isRunning {
-                step(String(localized: "Starting Windows. This can take a minute…"))
-                try await vmpal.start(machine.id)
+                step(String(localized: "Starting Windows. This may take a minute…"))
+                try await start(machine, with: vmpal)
             }
             if !machine.allowsControl {
-                try await allowControl(of: machine, with: vmpal)
+                guard try await allowControl(of: machine, with: vmpal) else { throw Stop.cancelled }
             }
             machine = try await vmpal.machines().first { $0.id == machine.id } ?? machine
 
-            step(String(localized: "Waiting for Windows to be ready…"))
+            step(String(localized: "Waiting for Windows…"))
             try await waitUntilReady(machine, with: vmpal)
 
             let guest = configurator(vmpal, machine)
             var snapshot = try await guest.inspect()
             if snapshot.keyMapping == .missing {
-                step(String(localized: "Setting up the Caps Lock key in Windows…"))
+                step(String(localized: "Configuring Caps Lock in Windows…"))
                 try await guest.applyKeyMapping(to: snapshot)
                 snapshot = try await guest.inspect()
+            }
+            var configuration = store.loadConfiguration()
+            if snapshot.keyMapping == .awaitingRestart {
+                // Recorded at once, so a setup interrupted from here on still completes after a restart.
+                configuration.markAwaitingRestart(machine.bridgeMachine)
+                save(configuration)
             }
 
             var restart = false
             if snapshot.keyMapping == .awaitingRestart {
                 restart = restartConfirmed ? true : await ask(
                     title: String(localized: "Restart Windows now?"),
-                    message: String(localized: "Windows needs to restart to learn the Caps Lock key. Save any open work in Windows first."),
-                    confirm: String(localized: "Restart Now"),
+                    message: String(localized: "Windows must restart to apply the Caps Lock mapping. Save any open documents in Windows before continuing."),
+                    confirm: String(localized: "Restart"),
                     cancel: String(localized: "Later"))
             }
 
             if snapshot.nvda == .capsLockOff {
-                step(String(localized: "Turning on Caps Lock as an NVDA key…"))
-                try await guest.enableNVDACapsLock(relaunch: !restart)
+                step(String(localized: "Turning on Caps Lock as an NVDA modifier key…"))
+                try await guest.enableNVDACapsLock()
             }
 
-            var configuration = store.loadConfiguration()
-            if snapshot.keyMapping == .awaitingRestart {
-                configuration.markAwaitingRestart(machine.bridgeMachine)
-                save(configuration)
-                if restart {
-                    step(String(localized: "Restarting Windows. This can take a few minutes…"))
-                    try await vmpal.restart(machine.id)
-                    snapshot = try await waitForRestart(of: machine, with: vmpal)
-                }
+            if snapshot.keyMapping == .awaitingRestart, restart {
+                step(String(localized: "Restarting Windows. This may take a few minutes…"))
+                try await vmpal.restart(machine.id)
+                snapshot = try await waitForRestart(of: machine, with: vmpal)
             }
             if snapshot.keyMapping == .active {
                 configuration.enable(machine.bridgeMachine)
@@ -329,29 +378,43 @@ final class AppModel {
             try await helper.ensureRunning()
         } catch HelperController.Failure.needsApproval {
             let open = await ask(
-                title: String(localized: "Turn CapsBridge on in Login Items"),
-                message: String(localized: "CapsBridge's helper is turned off in System Settings. Under General, Login Items & Extensions, turn CapsBridge on, then come back and try again."),
-                confirm: String(localized: "Open Login Items"),
+                title: String(localized: "CapsBridge Helper is turned off"),
+                message: String(localized: "Turn on CapsBridge in System Settings > General > Login Items & Extensions, and then try again."),
+                confirm: String(localized: "Open System Settings"),
                 cancel: String(localized: "Cancel"))
             if open { helper.openLoginItems() }
             throw Stop.cancelled
         }
     }
 
-    private func allowControl(of machine: VirtualMachine, with vmpal: VMPalCommandLine) async throws {
+    /// Asks to turn on VMPal's agent control for a VM, and does. Returns false when the user declines.
+    private func allowControl(of machine: VirtualMachine, with vmpal: VMPalCommandLine) async throws -> Bool {
         let allow = await ask(
-            title: String(localized: "Let CapsBridge set up Windows?"),
-            message: String(localized: "VMPal's “Allow agent control of this VM” setting is off for \(machine.name). CapsBridge needs it on to change settings inside Windows."),
+            title: String(localized: "Allow CapsBridge to configure Windows?"),
+            message: String(localized: "To change settings in Windows, CapsBridge requires the “Allow agent control of this VM” setting in VMPal, which is turned off for \(machine.name)."),
             confirm: String(localized: "Turn On and Continue"),
             cancel: String(localized: "Cancel"))
-        guard allow else { throw Stop.cancelled }
+        guard allow else { return false }
         try await vmpal.setControlAllowed(true, for: machine.id)
+        return true
+    }
+
+    /// Starts a VM. VMPal gives up waiting when it can't sign in to Windows by itself, and the user
+    /// can still sign in in the VM's window, which the wait that follows allows for.
+    private func start(_ machine: VirtualMachine, with vmpal: VMPalCommandLine) async throws {
+        do {
+            try await vmpal.start(machine.id)
+        } catch {
+            note("Starting \(machine.name) ended with: \(error)")
+            guard try await vmpal.machines().first(where: { $0.id == machine.id })?.isRunning == true else { throw error }
+        }
     }
 
     /// Waits for Windows to take commands, administrator ones included, which it does a while after it starts.
     private func waitUntilReady(_ machine: VirtualMachine, with vmpal: VMPalCommandLine) async throws {
         var status = try await vmpal.status(of: machine.id)
-        for _ in 0..<90 where !(status.canRunCommands && status.canRunAdministratorCommands) {
+        let deadline = Date().addingTimeInterval(180)
+        while !(status.canRunCommands && status.canRunAdministratorCommands), Date() < deadline {
             try await Task.sleep(for: .seconds(2))
             status = try await vmpal.status(of: machine.id)
         }
@@ -377,10 +440,10 @@ final class AppModel {
     // MARK: - Removing
 
     func remove() async {
-        guard activity == .idle else { return }
+        guard canAct else { return }
         let confirmed = await ask(
             title: String(localized: "Remove CapsBridge?"),
-            message: String(localized: "This removes the helper from this Mac, takes the Caps Lock key out of Windows, and puts NVDA's setting back if CapsBridge changed it. Nothing else is touched."),
+            message: String(localized: "The helper will be removed from this Mac, the Caps Lock mapping will be removed from Windows, and the NVDA setting will be restored if CapsBridge changed it. No other settings are affected."),
             confirm: String(localized: "Remove"),
             cancel: String(localized: "Cancel"),
             isDestructive: true)
@@ -388,30 +451,51 @@ final class AppModel {
 
         var leftAsIs: [String] = []
         await work {
-            if let installation = inspection.installation {
+            let configured = store.loadConfiguration()
+            if let installation = inspection.installation, let machines = try? await machinesToClean(with: VMPalCommandLine(installation: installation)) {
                 let vmpal = VMPalCommandLine(installation: installation)
-                for machine in try await machinesToClean(with: vmpal) {
-                    if try await !clean(machine, with: vmpal) { leftAsIs.append(machine.name) }
+                for machine in machines {
+                    do {
+                        guard try await clean(machine, with: vmpal) else {
+                            leftAsIs.append(machine.name)
+                            continue
+                        }
+                        var configuration = store.loadConfiguration()
+                        configuration.forget(machineID: machine.id)
+                        save(configuration)
+                    } catch Stop.cancelled {
+                        leftAsIs.append(machine.name)
+                    } catch {
+                        // One VM that can't be reached doesn't keep the others, or this Mac, from being cleaned.
+                        note("Cleaning \(machine.name) failed: \(error)")
+                        leftAsIs.append(machine.name)
+                    }
                 }
+            } else {
+                leftAsIs = (configured.machines + configured.awaitingRestart).map(\.name)
             }
-            step(String(localized: "Removing the helper from this Mac…"))
+
+            step(String(localized: "Removing the helper…"))
             await helper.remove()
-            KeyRemapper().deactivateBridge()
-            try store.removeAll()
+            KeyRemapper(store: store).deactivateBridge()
+            // Saved empty first: a configuration left behind would bring the helper back at the next check.
+            try? store.save(BridgeConfiguration())
+            try? store.removeAll()
+            DistributedNotificationCenter.default().postNotificationName(
+                CapsBridgeIdentifiers.configurationChanged, object: nil, userInfo: nil, deliverImmediately: true)
         }
         await refresh()
         guard failure == nil else { return }
 
-        var message = String(localized: "Windows goes back to its usual Caps Lock the next time it restarts.")
+        var message = String(localized: "Caps Lock returns to its usual behavior in Windows after the next restart.")
         if !leftAsIs.isEmpty {
-            message = String(localized: "Windows in \(leftAsIs.formatted(.list(type: .and))) was left as it is. Its key mapping does nothing without CapsBridge.")
+            message = String(localized: "\(leftAsIs.formatted(.list(type: .and))) was left unchanged. The remaining Caps Lock mapping has no effect without CapsBridge.")
         }
-        announce(String(localized: "CapsBridge was removed"))
         let trash = await ask(
-            title: String(localized: "CapsBridge was removed"),
-            message: message + " " + String(localized: "Do you want to move the CapsBridge app to the Trash as well?"),
+            title: String(localized: "CapsBridge has been removed"),
+            message: message + " " + String(localized: "Do you also want to move CapsBridge to the Trash?"),
             confirm: String(localized: "Move to Trash"),
-            cancel: String(localized: "Keep the App"))
+            cancel: String(localized: "Keep"))
         if trash { AppLocation.moveToTrashAndQuit() }
     }
 
@@ -428,27 +512,27 @@ final class AppModel {
     /// Takes CapsBridge's changes out of one VM's Windows. Returns false when the user chose to leave it.
     private func clean(_ machine: VirtualMachine, with vmpal: VMPalCommandLine) async throws -> Bool {
         if !machine.isRunning {
-            let start = await ask(
-                title: String(localized: "Start Windows to clean it up?"),
-                message: String(localized: "\(machine.name) isn't running. CapsBridge can start it to take its key mapping out, or leave Windows as it is: the mapping does nothing without CapsBridge."),
+            let startWindows = await ask(
+                title: String(localized: "Start Windows to complete removal?"),
+                message: String(localized: "\(machine.name) is not running. CapsBridge can start it to remove the Caps Lock mapping, or leave Windows unchanged. The mapping has no effect without CapsBridge."),
                 confirm: String(localized: "Start Windows"),
-                cancel: String(localized: "Leave Windows As It Is"))
-            guard start else { return false }
-            step(String(localized: "Starting Windows. This can take a minute…"))
-            try await vmpal.start(machine.id)
+                cancel: String(localized: "Leave Unchanged"))
+            guard startWindows else { return false }
+            step(String(localized: "Starting Windows. This may take a minute…"))
+            try await start(machine, with: vmpal)
         }
         if !machine.allowsControl {
-            try await allowControl(of: machine, with: vmpal)
+            guard try await allowControl(of: machine, with: vmpal) else { return false }
         }
-        step(String(localized: "Waiting for Windows to be ready…"))
+        step(String(localized: "Waiting for Windows…"))
         try await waitUntilReady(machine, with: vmpal)
 
         let guest = configurator(vmpal, machine)
         if try await guest.inspect().recordedNVDAChange != nil {
-            step(String(localized: "Putting NVDA's setting back…"))
-            try await guest.restoreNVDASetting(relaunch: true)
+            step(String(localized: "Restoring the NVDA setting…"))
+            try await guest.restoreNVDASetting()
         }
-        step(String(localized: "Taking the Caps Lock key out of Windows…"))
+        step(String(localized: "Removing the Caps Lock mapping from Windows…"))
         try await guest.removeKeyMapping(from: try await guest.inspect())
         return true
     }
@@ -495,6 +579,7 @@ final class AppModel {
         }
         progress = nil
         activity = .idle
+        if quitWhenDone { NSApp.reply(toApplicationShouldTerminate: true) }
     }
 
     private func step(_ message: String) {
@@ -520,33 +605,37 @@ final class AppModel {
     private func message(for error: Error) -> String {
         switch error {
         case Stop.windowsNotReady:
-            return String(localized: "Windows didn't become ready in time. Sign in to Windows in the virtual machine's window, then try again.")
+            return String(localized: "Windows did not become available in time. Sign in to Windows in the virtual machine window, and then try again.")
         case Stop.restartTookTooLong:
-            return String(localized: "Windows is taking a long time to restart. Once it's back, open CapsBridge again and it finishes by itself.")
+            return String(localized: "Windows is taking longer than expected to restart. When Windows is available, open CapsBridge again to complete setup.")
         case Stop.administratorUnavailable:
-            return String(localized: "Windows can't run administrator commands yet. Open the virtual machine, sign in, and let VMPal Tools finish installing, then try again.")
+            return String(localized: "Windows cannot run administrator commands yet. Open the virtual machine, sign in, wait for VMPal Tools to finish installing, and then try again.")
         case HelperController.Failure.couldNotStart(let reason):
             return reason.isEmpty
-                ? String(localized: "The helper couldn't be started. Try again, or restart this Mac.")
-                : String(localized: "The helper couldn't be installed: \(reason)")
+                ? String(localized: "The helper could not be started. Try again, or restart your Mac.")
+                : String(localized: "The helper could not be installed. \(reason)")
         case VMPalError.commandFailed(_, _, let reason):
-            return String(localized: "VMPal couldn't do that: \(reason)")
+            return String(localized: "VMPal could not complete the request. \(reason)")
         case VMPalError.unreadableAnswer:
-            return String(localized: "VMPal answered in a way CapsBridge doesn't understand. Updating VMPal and CapsBridge may help.")
+            return String(localized: "VMPal returned an unexpected response. Updating VMPal and CapsBridge may resolve the issue.")
         case GuestError.scriptFailed(let reason):
-            return String(localized: "A step failed inside Windows: \(reason)")
+            return String(localized: "An operation in Windows failed. \(reason)")
         case GuestError.unreadableProbe:
-            return String(localized: "Windows answered in a way CapsBridge doesn't understand.")
+            return String(localized: "Windows returned an unexpected response.")
+        case GuestError.nvdaNotRestarted:
+            return String(localized: "NVDA could not be restarted. To start NVDA, press Control-Alt-N in Windows.")
+        case GuestError.nvdaConfigChanged:
+            return String(localized: "The NVDA configuration changed while CapsBridge was updating it, so it was left unchanged. Try again.")
         case GuestError.nvdaStillRunning:
-            return String(localized: "NVDA didn't quit, so its settings weren't changed. Quit NVDA in Windows and try again.")
+            return String(localized: "NVDA did not quit, so its settings were not changed. Quit NVDA in Windows, and then try again.")
         case GuestError.nvdaConfigUnreadable:
-            return String(localized: "NVDA's settings file couldn't be read, so it was left alone.")
+            return String(localized: "The NVDA configuration file could not be read and was left unchanged.")
         default:
             return error.localizedDescription
         }
     }
 
-    private func announce(_ message: String) {
+    func announce(_ message: String) {
         guard !message.isEmpty else { return }
         AccessibilityNotification.Announcement(message).post()
     }
@@ -583,6 +672,6 @@ final class AppModel {
     func copyDiagnosticReport() {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(diagnosticReport, forType: .string)
-        announce(String(localized: "Report copied"))
+        announce(String(localized: "Diagnostic report copied"))
     }
 }

@@ -30,7 +30,8 @@ public struct VMPalGuestShell: GuestShell {
             asAdministrator: asAdministrator,
             timeout: 120)
         guard result.succeeded else {
-            let message = [result.stderr, result.stdout].compactMap { $0 }.first { !$0.isEmpty } ?? ""
+            let printed = [result.stderr, result.stdout].compactMap { $0 }.first { !$0.isEmpty }
+            let message = printed ?? (result.timedOut == true ? "PowerShell timed out." : "PowerShell exited with code \(result.exitCode ?? -1).")
             throw GuestError.scriptFailed(message.trimmingCharacters(in: .whitespacesAndNewlines))
         }
         return result.stdout ?? ""
@@ -65,7 +66,7 @@ public struct GuestConfigurator: Sendable {
     public func applyKeyMapping(to snapshot: GuestSnapshot) async throws {
         var map = ScancodeMap()
         var unreadableOriginal: String?
-        if let existing = snapshot.scancodeMap {
+        if let existing = snapshot.scancodeMap, !existing.isEmpty {
             if let parsed = ScancodeMap(hex: existing) {
                 map = parsed
             } else {
@@ -78,17 +79,22 @@ public struct GuestConfigurator: Sendable {
             "$layout = 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Keyboard Layout'",
             "$marker = 'HKLM:\\SOFTWARE\\CapsBridge'",
             "if (-not (Test-Path $marker)) { New-Item -Path $marker | Out-Null }",
-            "Set-ItemProperty -Path $layout -Name 'Scancode Map' -Type Binary -Value ([byte[]](\(Self.byteList(map.registryData))))",
+            "Set-ItemProperty -Path $layout -Name 'Scancode Map' -Type Binary -Value ([byte[]]@(\(Self.byteList(map.registryData))))",
             // A volatile key lives in memory only, so it's gone once Windows has restarted, and tells
             // "written since the last start" without trusting the VM's clock.
             "$machine = [Microsoft.Win32.RegistryKey]::OpenBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, [Microsoft.Win32.RegistryView]::Default)",
             "$machine.CreateSubKey('SOFTWARE\\CapsBridge\\AwaitingRestart', [Microsoft.Win32.RegistryKeyPermissionCheck]::Default, [Microsoft.Win32.RegistryOptions]::Volatile).Close()",
         ]
+        // The notes describe this setup only: what an earlier one replaced may have been removed since.
         if let replaced {
             lines.append("Set-ItemProperty -Path $marker -Name 'ReplacedMapping' -Value \(GuestScripts.quoted(replaced.hex))")
+        } else {
+            lines.append("Remove-ItemProperty -Path $marker -Name 'ReplacedMapping' -ErrorAction SilentlyContinue")
         }
         if let unreadableOriginal {
             lines.append("Set-ItemProperty -Path $marker -Name 'OriginalScancodeMap' -Value \(GuestScripts.quoted(unreadableOriginal))")
+        } else {
+            lines.append("Remove-ItemProperty -Path $marker -Name 'OriginalScancodeMap' -ErrorAction SilentlyContinue")
         }
         _ = try await shell.runPowerShell(GuestScripts.failing(lines.joined(separator: "\n")), asAdministrator: true)
     }
@@ -102,8 +108,8 @@ public struct GuestConfigurator: Sendable {
         if let existing = snapshot.scancodeMap, var map = ScancodeMap(hex: existing), map.containsBridge {
             map.removeBridge(restoring: snapshot.replacedMapping.flatMap(ScancodeMap.Entry.init(hex:)))
             let restored = map.isEmpty ? snapshot.originalScancodeMap.flatMap { Data(hex: $0) } : map.registryData
-            if let restored {
-                lines.append("Set-ItemProperty -Path $layout -Name 'Scancode Map' -Type Binary -Value ([byte[]](\(Self.byteList(restored))))")
+            if let restored, !restored.isEmpty {
+                lines.append("Set-ItemProperty -Path $layout -Name 'Scancode Map' -Type Binary -Value ([byte[]]@(\(Self.byteList(restored))))")
             } else {
                 lines.append("Remove-ItemProperty -Path $layout -Name 'Scancode Map'")
             }
@@ -117,46 +123,34 @@ public struct GuestConfigurator: Sendable {
     /// Makes Caps Lock an NVDA key in NVDA's own configuration. Returns whether anything had to change.
     ///
     /// NVDA writes its configuration when it quits, so it is quit first and the file is read again
-    /// after. `relaunch` starts NVDA again when it was running; leave it out when Windows restarts next.
+    /// after. NVDA is running again afterwards if it was before, whatever happens in between.
     @discardableResult
-    public func enableNVDACapsLock(relaunch: Bool) async throws -> Bool {
+    public func enableNVDACapsLock() async throws -> Bool {
         let before = try await inspect()
         guard before.nvdaPath != nil, before.nvda == .capsLockOff else { return false }
-        let snapshot = try await quitNVDA(seenIn: before)
-        do {
+        try await whileNVDAIsQuit(seenIn: before) { snapshot in
             var config = try nvdaConfiguration(in: snapshot)
-            if let change = config.enableCapsLock() {
-                // A change recorded earlier stays the one to undo: it holds what the user had first.
-                let record = snapshot.recordedNVDAChange ?? change
-                try await write(config, to: snapshot.nvdaConfigPath, recording: record)
-            }
-        } catch {
-            try? await relaunchNVDA(seenIn: before, wanted: true)
-            throw error
+            guard let change = config.enableCapsLock() else { return }
+            // A change recorded earlier stays the one to undo: it holds what the user had first.
+            try await write(config, over: snapshot, recording: snapshot.recordedNVDAChange ?? change)
         }
-        try await relaunchNVDA(seenIn: before, wanted: relaunch)
         return true
     }
 
     /// Undoes `enableNVDACapsLock`, when CapsBridge was what turned Caps Lock on. Returns whether it changed anything.
     @discardableResult
-    public func restoreNVDASetting(relaunch: Bool) async throws -> Bool {
+    public func restoreNVDASetting() async throws -> Bool {
         let before = try await inspect()
         guard let change = before.recordedNVDAChange else { return false }
         guard before.nvdaPath != nil else {
             try await removeUserNotes()
             return false
         }
-        let snapshot = try await quitNVDA(seenIn: before)
-        do {
+        try await whileNVDAIsQuit(seenIn: before) { snapshot in
             var config = try nvdaConfiguration(in: snapshot)
             config.undo(change)
-            try await write(config, to: snapshot.nvdaConfigPath, recording: nil)
-        } catch {
-            try? await relaunchNVDA(seenIn: before, wanted: true)
-            throw error
+            try await write(config, over: snapshot, recording: nil)
         }
-        try await relaunchNVDA(seenIn: before, wanted: relaunch)
         return true
     }
 
@@ -168,29 +162,55 @@ public struct GuestConfigurator: Sendable {
         }
     }
 
-    /// Quits NVDA when it runs, and returns Windows as it is once NVDA has written its configuration.
-    private func quitNVDA(seenIn snapshot: GuestSnapshot) async throws -> GuestSnapshot {
-        guard snapshot.nvdaRunning, let path = snapshot.nvdaPath else { return snapshot }
-        let script = """
+    /// Quits NVDA when it runs, does the work on Windows as it is once NVDA has written its
+    /// configuration, and starts NVDA again, also when the work failed.
+    private func whileNVDAIsQuit(seenIn before: GuestSnapshot, _ work: (GuestSnapshot) async throws -> Void) async throws {
+        guard before.nvdaRunning, let path = before.nvdaPath else {
+            try await work(before)
+            return
+        }
+        do {
+            try await quitNVDA(at: path)
+            try await work(try await inspect())
+        } catch {
+            try? await startNVDA(at: path)
+            throw error
+        }
+        try await startNVDA(at: path)
+    }
+
+    private func quitNVDA(at path: String) async throws {
+        let answer = try await shell.runPowerShell(GuestScripts.failing("""
         Start-Process -FilePath \(GuestScripts.quoted(path)) -ArgumentList '-q' -Wait
-        $deadline = (Get-Date).AddSeconds(30)
+        $deadline = (Get-Date).AddSeconds(60)
         while ((Get-Process -Name nvda -ErrorAction SilentlyContinue) -and ((Get-Date) -lt $deadline)) {
             Start-Sleep -Milliseconds 250
         }
         if (Get-Process -Name nvda -ErrorAction SilentlyContinue) { 'running' } else { 'quit' }
-        """
-        let answer = try await shell.runPowerShell(GuestScripts.failing(script), asAdministrator: false)
+        """), asAdministrator: false)
         guard answer.contains("quit") else { throw GuestError.nvdaStillRunning }
-        return try await inspect()
     }
 
-    private func relaunchNVDA(seenIn snapshot: GuestSnapshot, wanted: Bool) async throws {
-        guard wanted, snapshot.nvdaRunning, let path = snapshot.nvdaPath else { return }
+    /// Starts NVDA unless it runs already, and waits until it does.
+    private func startNVDA(at path: String) async throws {
+        // An NVDA that was slow to quit may still be on its way out.
+        let check = """
+        $deadline = (Get-Date).AddSeconds(%d)
+        while (-not (Get-Process -Name nvda -ErrorAction SilentlyContinue) -and ((Get-Date) -lt $deadline)) {
+            Start-Sleep -Milliseconds 300
+        }
+        if (Get-Process -Name nvda -ErrorAction SilentlyContinue) { 'running' } else { 'stopped' }
+        """
+        if try await shell.runPowerShell(String(format: check, 2), asAdministrator: false).contains("running") { return }
         try await shell.open(path)
+        if try await shell.runPowerShell(String(format: check, 20), asAdministrator: false).contains("running") { return }
+        throw GuestError.nvdaNotRestarted
     }
 
-    /// Replaces `nvda.ini` in one move: the new file is copied beside it, checked, then renamed over it.
-    private func write(_ config: NVDAConfig, to guestPath: String, recording change: NVDAConfig.Change?) async throws {
+    /// Replaces `nvda.ini` with one system call, and only when it's still what was read: the new file is
+    /// copied beside it and checked first.
+    private func write(_ config: NVDAConfig, over snapshot: GuestSnapshot, recording change: NVDAConfig.Change?) async throws {
+        let guestPath = snapshot.nvdaConfigPath
         let data = config.data
         let local = FileManager.default.temporaryDirectory.appendingPathComponent("capsbridge-\(UUID().uuidString).ini")
         try data.write(to: local, options: .atomic)
@@ -204,17 +224,31 @@ public struct GuestConfigurator: Sendable {
         """), asAdministrator: false)
         try await shell.copyIntoGuest(local, to: staged)
 
-        let digest = SHA256.hash(data: data).map { String(format: "%02X", $0) }.joined()
+        let original = snapshot.nvdaConfigData.map(Self.digest) ?? ""
         var lines = [
             "$staged = \(GuestScripts.quoted(staged))",
-            "if ((Get-FileHash -Algorithm SHA256 -LiteralPath $staged).Hash -ne '\(digest)') {",
+            "$target = \(GuestScripts.quoted(guestPath))",
+            "if ((Get-FileHash -Algorithm SHA256 -LiteralPath $staged).Hash -ne '\(Self.digest(data))') {",
             "    Remove-Item -LiteralPath $staged -Force",
             "    throw 'The copied configuration does not match.'",
             "}",
-            "Move-Item -LiteralPath $staged -Destination \(GuestScripts.quoted(guestPath)) -Force",
+            "$current = if (Test-Path -LiteralPath $target) { (Get-FileHash -Algorithm SHA256 -LiteralPath $target).Hash } else { '' }",
+            "if ($current -ne '\(original)') {",
+            "    Remove-Item -LiteralPath $staged -Force",
+            "    throw '\(GuestScripts.changedMarker)'",
+            "}",
+            "if ($current) { [IO.File]::Replace($staged, $target, [NullString]::Value) } else { Move-Item -LiteralPath $staged -Destination $target }",
         ]
         lines += Self.userNotes(recording: change)
-        _ = try await shell.runPowerShell(GuestScripts.failing(lines.joined(separator: "\n")), asAdministrator: false)
+        do {
+            _ = try await shell.runPowerShell(GuestScripts.failing(lines.joined(separator: "\n")), asAdministrator: false)
+        } catch GuestError.scriptFailed(let message) where message.contains(GuestScripts.changedMarker) {
+            throw GuestError.nvdaConfigChanged
+        }
+    }
+
+    private static func digest(_ data: Data) -> String {
+        SHA256.hash(data: data).map { String(format: "%02X", $0) }.joined()
     }
 
     private func removeUserNotes() async throws {

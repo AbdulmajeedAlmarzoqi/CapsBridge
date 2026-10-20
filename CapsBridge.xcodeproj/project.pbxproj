@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		088B511A9761D92264A3665E /* HelperController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E023B13646F5999F597CFA4B /* HelperController.swift */; };
+		66AFE7710B085E815F30278A /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 73F6FB0073A901527C418CA1 /* AppIcon.icon */; };
 		7DD4CCA0DCBBC1F89BE3987A /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = FEA6D2942C8659459A258D23 /* Localizable.xcstrings */; };
 		80E16E9B43ED2AA75C996022 /* CapsBridgeHelper.app in Embed Dependencies */ = {isa = PBXBuildFile; fileRef = 9B60A0B560305DDD83FAFE16 /* CapsBridgeHelper.app */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8350EB550345E967F93FAA6E /* CapsBridgeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 21067992C1EFB075BAF47AB4 /* CapsBridgeKit */; };
@@ -60,6 +61,7 @@
 		182E3CECB7917B3857FA002B /* AppLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLocation.swift; sourceTree = "<group>"; };
 		26FF84544386FB322550FF5F /* com.abdulmajeedalmarzoqi.capsbridge.helper.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = com.abdulmajeedalmarzoqi.capsbridge.helper.plist; sourceTree = "<group>"; };
 		3037B2EA7F5588F4B74C496F /* CapsBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CapsBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		73F6FB0073A901527C418CA1 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		97A0F6635B86CC220C626405 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9B60A0B560305DDD83FAFE16 /* CapsBridgeHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CapsBridgeHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6D9E2A120B2BFFEBFEF28F2 /* Inspection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inspection.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				3449B5F105041C68DC603E10 /* LaunchAgents */,
+				73F6FB0073A901527C418CA1 /* AppIcon.icon */,
 				97A0F6635B86CC220C626405 /* Assets.xcassets */,
 				FEA6D2942C8659459A258D23 /* Localizable.xcstrings */,
 			);
@@ -259,6 +262,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66AFE7710B085E815F30278A /* AppIcon.icon in Resources */,
 				8A278D0B32685EE02703C1F1 /* Assets.xcassets in Resources */,
 				7DD4CCA0DCBBC1F89BE3987A /* Localizable.xcstrings in Resources */,
 			);

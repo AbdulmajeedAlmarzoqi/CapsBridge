@@ -35,6 +35,8 @@ public struct NVDAConfig: Equatable, Sendable {
 
     public enum ReadError: Error, Equatable, Sendable {
         case notUTF8
+        /// The file is there, and couldn't be read.
+        case notReadable
     }
 
     private static let capsLockBit = 1

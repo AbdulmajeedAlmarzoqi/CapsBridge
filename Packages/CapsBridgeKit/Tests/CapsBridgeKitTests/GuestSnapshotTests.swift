@@ -3,7 +3,7 @@ import Testing
 @testable import CapsBridgeKit
 
 @Suite struct GuestSnapshotTests {
-    private func snapshot(map: String?, awaitingRestart: Bool = false, nvdaPath: String? = "C:\\Program Files\\NVDA\\nvda.exe", config: String? = nil) throws -> GuestSnapshot {
+    private func snapshot(map: String?, awaitingRestart: Bool = false, nvdaPath: String? = "C:\\Program Files\\NVDA\\nvda.exe", config: String? = nil, configExists: Bool? = nil) throws -> GuestSnapshot {
         var fields: [String: Any] = [
             "marked": awaitingRestart, "awaitingRestart": awaitingRestart, "nvdaRunning": true,
             "nvdaConfigPath": "C:\\Users\\me\\AppData\\Roaming\\nvda\\nvda.ini",
@@ -11,6 +11,7 @@ import Testing
         fields["scancodeMap"] = map
         fields["nvdaPath"] = nvdaPath
         fields["nvdaConfig"] = config.map { Data($0.utf8).base64EncodedString() }
+        fields["nvdaConfigExists"] = configExists ?? (config != nil)
         let json = try JSONSerialization.data(withJSONObject: fields)
         return try GuestSnapshot(probeOutput: json.base64EncodedString() + "\r\n")
     }
@@ -35,6 +36,17 @@ import Testing
         #expect(try snapshot(map: nil, config: nil).nvda == .capsLockOff)
         #expect(try snapshot(map: nil, config: "schemaVersion = 24\n[keyboard]\n\tNVDAModifierKeys = 7\n").nvda == .capsLockOn)
         #expect(try snapshot(map: nil, config: "schemaVersion = 24\n").nvda == .capsLockOff)
+    }
+
+    @Test func neverTakesAFileItCouldNotReadForAMissingOne() throws {
+        // Writing a fresh configuration over it would lose everything the user set in NVDA.
+        let unread = try snapshot(map: nil, config: nil, configExists: true)
+        #expect(unread.nvda == .unreadable)
+        #expect(throws: NVDAConfig.ReadError.notReadable) { try unread.nvdaConfiguration() }
+
+        let missing = try snapshot(map: nil, config: nil, configExists: false)
+        #expect(missing.nvda == .capsLockOff)
+        #expect(try missing.nvdaConfiguration().text == "")
     }
 
     @Test func rejectsAnAnswerThatIsNotTheProbes() {

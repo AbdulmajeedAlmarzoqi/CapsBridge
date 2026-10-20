@@ -105,6 +105,7 @@ public struct SharedStore: Sendable {
 
     public var configurationURL: URL { directory.appendingPathComponent("configuration.json") }
     public var helperStatusURL: URL { directory.appendingPathComponent("helper-status.json") }
+    public var displacedMappingsURL: URL { directory.appendingPathComponent("displaced-key-mappings.json") }
 
     public func loadConfiguration() -> BridgeConfiguration {
         load(BridgeConfiguration.self, from: configurationURL) ?? BridgeConfiguration()
@@ -120,6 +121,18 @@ public struct SharedStore: Sendable {
 
     public func save(_ status: HelperStatus) throws {
         try write(status, to: helperStatusURL)
+    }
+
+    public func loadDisplacedMappings() -> [KeyMapping] {
+        load([KeyMapping].self, from: displacedMappingsURL) ?? []
+    }
+
+    public func saveDisplacedMappings(_ mappings: [KeyMapping]) {
+        if mappings.isEmpty {
+            try? FileManager.default.removeItem(at: displacedMappingsURL)
+        } else {
+            try? write(mappings, to: displacedMappingsURL)
+        }
     }
 
     public func configurationModificationDate() -> Date? {

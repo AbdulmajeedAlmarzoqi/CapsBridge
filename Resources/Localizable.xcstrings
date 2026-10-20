@@ -1,72 +1,92 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@ is not running" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏%@ لا يعمل حاليًا"
+          }
+        }
+      }
+    },
+    "%@ is not running. CapsBridge can start it to remove the Caps Lock mapping, or leave Windows unchanged. The mapping has no effect without CapsBridge." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏%@ لا يعمل حاليًا. يمكن لـ CapsBridge تشغيله لإزالة تعيين مفتاح Caps Lock، أو ترك Windows دون تغيير، إذ لا أثر للتعيين من دون CapsBridge."
+          }
+        }
+      }
+    },
     "%@ is running" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ يعمل"
+            "value" : "‏%@ قيد التشغيل"
           }
         }
       }
     },
-    "%@ is running, with VMPal's “Allow agent control of this VM” turned off" : {
+    "%@ is running, but “Allow agent control of this VM” is turned off in VMPal" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ يعمل، وخيار «Allow agent control of this VM» في VMPal متوقف"
+            "value" : "‏%@ قيد التشغيل، لكن الخيار “Allow agent control of this VM” متوقف في VMPal"
           }
         }
       }
     },
-    "%@ is starting, or waiting for someone to sign in" : {
+    "%@ is starting up or waiting for a user to sign in" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ في طور التشغيل، أو ينتظر تسجيل الدخول"
+            "value" : "‏%@ قيد البدء أو بانتظار تسجيل دخول المستخدم"
           }
         }
       }
     },
-    "%@ isn't running" : {
+    "%@ was left unchanged. The remaining Caps Lock mapping has no effect without CapsBridge." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ متوقف"
+            "value" : "تُرك %@ دون تغيير. ولا أثر لتعيين مفتاح Caps Lock المتبقي من دون CapsBridge."
           }
         }
       }
     },
-    "%@ isn't running. CapsBridge can start it to take its key mapping out, or leave Windows as it is: the mapping does nothing without CapsBridge." : {
+    "Allow CapsBridge to configure Windows?" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ متوقف. يستطيع CapsBridge تشغيله ليزيل تعيين المفتاح منه، أو يترك ويندوز كما هو، فالتعيين لا يفعل شيئًا من دون CapsBridge."
+            "value" : "هل تريد السماح لـ CapsBridge بإعداد Windows؟"
           }
         }
       }
     },
-    "A step failed inside Windows: %@" : {
+    "An earlier version is running" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تعذّرت خطوة داخل ويندوز: %@"
+            "value" : "يعمل إصدار أقدم"
           }
         }
       }
     },
-    "Can't be checked right now" : {
+    "An operation in Windows failed. %@" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يتعذّر فحصه الآن"
+            "value" : "تعذّر إكمال عملية في Windows. %@"
           }
         }
       }
@@ -81,52 +101,62 @@
         }
       }
     },
-    "Caps Lock is an NVDA key" : {
+    "Cannot be verified right now" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "مفتاح Caps Lock مفعّل لـ NVDA"
+            "value" : "يتعذّر التحقق منه حاليًا"
           }
         }
       }
     },
-    "Caps Lock is ready" : {
+    "Caps Lock in Windows" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "مفتاح Caps Lock جاهز"
+            "value" : "مفتاح Caps Lock في Windows"
           }
         }
       }
     },
-    "Caps Lock isn't an NVDA key yet" : {
+    "Caps Lock is an NVDA modifier key" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "مفتاح Caps Lock غير مفعّل لـ NVDA بعد"
+            "value" : "مفتاح Caps Lock مفعّل مفتاحَ تعديل في NVDA"
           }
         }
       }
     },
-    "Caps Lock isn't set up yet" : {
+    "Caps Lock is not yet an NVDA modifier key" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "لم يُجهَّز مفتاح Caps Lock بعد"
+            "value" : "مفتاح Caps Lock غير مفعّل بعدُ مفتاحَ تعديل في NVDA"
           }
         }
       }
     },
-    "Caps Lock key in Windows" : {
+    "Caps Lock is ready to use" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "مفتاح Caps Lock في ويندوز"
+            "value" : "مفتاح Caps Lock جاهز للاستخدام"
+          }
+        }
+      }
+    },
+    "Caps Lock returns to its usual behavior in Windows after the next restart." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يعود مفتاح Caps Lock إلى سلوكه المعتاد في Windows بعد إعادة التشغيل القادمة."
           }
         }
       }
@@ -141,6 +171,26 @@
         }
       }
     },
+    "CapsBridge Helper" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مساعد CapsBridge"
+          }
+        }
+      }
+    },
+    "CapsBridge Helper is turned off" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مساعد CapsBridge متوقف"
+          }
+        }
+      }
+    },
     "CapsBridge Website" : {
       "localizations" : {
         "ar" : {
@@ -151,52 +201,62 @@
         }
       }
     },
-    "CapsBridge couldn't be moved to the Applications folder: %@" : {
+    "CapsBridge could not be moved to the Applications folder. %@" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تعذّر نقل CapsBridge إلى مجلد التطبيقات: %@"
+            "value" : "تعذّر نقل CapsBridge إلى مجلد التطبيقات. %@"
           }
         }
       }
     },
-    "CapsBridge runs a small helper from inside the app, so the app needs to stay in one place." : {
+    "CapsBridge has been removed" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يشغّل CapsBridge مساعدًا صغيرًا من داخل التطبيق، لذا ينبغي أن يبقى التطبيق في مكان ثابت."
+            "value" : "تمت إزالة CapsBridge"
           }
         }
       }
     },
-    "CapsBridge was removed" : {
+    "CapsBridge is not set up" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "أُزيل CapsBridge"
+            "value" : "لم يتم إعداد CapsBridge"
           }
         }
       }
     },
-    "CapsBridge works with Windows virtual machines in VMPal. Install VMPal, create a Windows virtual machine, then open CapsBridge again." : {
+    "CapsBridge requires VMPal and a Windows virtual machine. Install VMPal, create a Windows virtual machine, and then open CapsBridge again." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يعمل CapsBridge مع أجهزة ويندوز الافتراضية في VMPal. ثبّت VMPal وأنشئ جهاز ويندوز افتراضيًا، ثم افتح CapsBridge من جديد."
+            "value" : "يتطلب CapsBridge تطبيق VMPal وجهاز Windows افتراضيًا. ثبّت VMPal وأنشئ جهاز Windows افتراضيًا، ثم افتح CapsBridge مرة أخرى."
           }
         }
       }
     },
-    "CapsBridge's helper is turned off in System Settings. Under General, Login Items & Extensions, turn CapsBridge on, then come back and try again." : {
+    "CapsBridge runs a helper from within the app, so the app must remain in the Applications folder." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "مساعد CapsBridge متوقف في إعدادات النظام. فعّل CapsBridge من «عام» ثم «عناصر تسجيل الدخول والملحقات»، ثم عُد وحاول مجددًا."
+            "value" : "يشغّل CapsBridge مساعدًا من داخل التطبيق، لذا يجب أن يبقى التطبيق في مجلد التطبيقات."
+          }
+        }
+      }
+    },
+    "CapsBridge will quit when the current operation is complete." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سيتم إنهاء CapsBridge عند اكتمال العملية الحالية."
           }
         }
       }
@@ -206,17 +266,77 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "أعد الفحص"
+            "value" : "التحقق مرة أخرى"
           }
         }
       }
     },
-    "Checking this Mac and Windows…" : {
+    "Checking configuration…" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "جارٍ فحص الماك وويندوز…"
+            "value" : "جارٍ التحقق من الإعداد…"
+          }
+        }
+      }
+    },
+    "Click Fix to resolve the items that need attention." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "انقر على «إصلاح» لمعالجة العناصر التي تحتاج إلى ذلك."
+          }
+        }
+      }
+    },
+    "Configured; cannot be verified right now" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مُعَدّ، ويتعذّر التحقق منه حاليًا"
+          }
+        }
+      }
+    },
+    "Configured; takes effect after Windows restarts" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مُعَدّ، ويسري بعد إعادة تشغيل Windows"
+          }
+        }
+      }
+    },
+    "Configured; takes effect the next time Windows starts" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مُعَدّ، ويسري عند تشغيل Windows في المرة القادمة"
+          }
+        }
+      }
+    },
+    "Configured; verified when Windows is running" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مُعَدّ، ويُتحقَّق منه عندما يكون Windows قيد التشغيل"
+          }
+        }
+      }
+    },
+    "Configuring Caps Lock in Windows…" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ إعداد مفتاح Caps Lock في Windows…"
           }
         }
       }
@@ -231,22 +351,42 @@
         }
       }
     },
-    "Create a Windows virtual machine in VMPal, then check again." : {
+    "Create a Windows virtual machine in VMPal, and then check again." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "أنشئ جهاز ويندوز افتراضيًا في VMPal، ثم أعد الفحص."
+            "value" : "أنشئ جهاز Windows افتراضيًا في VMPal، ثم تحقّق مرة أخرى."
           }
         }
       }
     },
-    "Do you want to move the CapsBridge app to the Trash as well?" : {
+    "Diagnostic report copied" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "هل تريد نقل تطبيق CapsBridge إلى سلة المهملات أيضًا؟"
+            "value" : "تم نسخ تقرير التشخيص"
+          }
+        }
+      }
+    },
+    "Do you also want to move CapsBridge to the Trash?" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هل تريد أيضًا نقل CapsBridge إلى سلة المهملات؟"
+          }
+        }
+      }
+    },
+    "Don’t Move" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عدم النقل"
           }
         }
       }
@@ -261,16 +401,6 @@
         }
       }
     },
-    "Fix takes care of what's marked below." : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "زر «إصلاح» يعالج ما هو مُعلَّم في القائمة أدناه."
-          }
-        }
-      }
-    },
     "Get VMPal" : {
       "localizations" : {
         "ar" : {
@@ -281,52 +411,42 @@
         }
       }
     },
-    "Helper on this Mac" : {
+    "In Windows, hold Caps Lock as the screen reader modifier key. To turn Caps Lock on or off, press it twice quickly." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "المساعد على الماك"
+            "value" : "في Windows، اضغط مع الاستمرار على Caps Lock لاستخدامه مفتاحَ تعديل لقارئ الشاشة. ولتشغيل Caps Lock أو إيقافه، اضغطه مرتين بسرعة."
           }
         }
       }
     },
-    "In Windows, hold Caps Lock as your screen reader's key. Press it twice quickly to turn Caps Lock on or off." : {
+    "Installed (version %@)" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "في ويندوز، استخدم Caps Lock بالضغط المستمر مفتاحًا لقارئ الشاشة. واضغطه مرتين سريعًا لتشغيل الحروف الكبيرة أو إيقافها."
+            "value" : "مثبّت (الإصدار %@)"
           }
         }
       }
     },
-    "Installing the helper on this Mac…" : {
+    "Installing the helper…" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "جارٍ تثبيت المساعد على الماك…"
+            "value" : "جارٍ تثبيت المساعد…"
           }
         }
       }
     },
-    "Its settings file can't be read, so it's left alone. In NVDA's Keyboard settings, choose Caps Lock as an NVDA modifier key" : {
+    "Keep" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تعذّرت قراءة ملف إعداداته فتُرك كما هو. من إعدادات لوحة المفاتيح في NVDA، اختر Caps Lock ضمن مفاتيح NVDA"
-          }
-        }
-      }
-    },
-    "Keep the App" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "إبقاء التطبيق"
+            "value" : "إبقاء"
           }
         }
       }
@@ -341,32 +461,32 @@
         }
       }
     },
-    "Leave Windows As It Is" : {
+    "Leave Unchanged" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "اترك ويندوز كما هو"
+            "value" : "ترك دون تغيير"
           }
         }
       }
     },
-    "Let CapsBridge set up Windows?" : {
+    "Make sure VMPal is running, and then check again." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "هل تسمح لـ CapsBridge بإعداد ويندوز؟"
+            "value" : "تأكّد من أن VMPal قيد التشغيل، ثم تحقّق مرة أخرى."
           }
         }
       }
     },
-    "Missing. Windows may have been reset or taken back to a snapshot" : {
+    "Missing. Windows may have been reset or restored from a snapshot." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "مفقود. ربما أُعيد ضبط ويندوز أو أُرجع إلى لقطة سابقة"
+            "value" : "مفقود. ربما أُعيد ضبط Windows أو استُعيد من لقطة سابقة."
           }
         }
       }
@@ -381,12 +501,12 @@
         }
       }
     },
-    "Move to Applications" : {
+    "Move to Applications Folder" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "انقله إلى التطبيقات"
+            "value" : "نقل إلى مجلد التطبيقات"
           }
         }
       }
@@ -396,7 +516,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "انقله إلى سلة المهملات"
+            "value" : "نقل إلى سلة المهملات"
           }
         }
       }
@@ -411,22 +531,22 @@
         }
       }
     },
-    "NVDA didn't quit, so its settings weren't changed. Quit NVDA in Windows and try again." : {
+    "NVDA could not be restarted. To start NVDA, press Control-Alt-N in Windows." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "لم يُغلَق NVDA فلم تُغيَّر إعداداته. أغلق NVDA في ويندوز ثم حاول مجددًا."
+            "value" : "تعذّرت إعادة تشغيل NVDA. لتشغيل NVDA، اضغط Control-Alt-N في Windows."
           }
         }
       }
     },
-    "NVDA's settings file couldn't be read, so it was left alone." : {
+    "NVDA did not quit, so its settings were not changed. Quit NVDA in Windows, and then try again." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تعذّرت قراءة ملف إعدادات NVDA فتُرك كما هو."
+            "value" : "لم يتم إنهاء NVDA، لذا لم تُغيَّر إعداداته. أنهِ NVDA في Windows، ثم حاول مرة أخرى."
           }
         }
       }
@@ -441,12 +561,12 @@
         }
       }
     },
-    "No Windows virtual machine yet" : {
+    "No Windows virtual machine was found" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "لا يوجد جهاز ويندوز افتراضي بعد"
+            "value" : "لم يُعثر على جهاز Windows افتراضي"
           }
         }
       }
@@ -461,22 +581,12 @@
         }
       }
     },
-    "Not Now" : {
+    "Not configured" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ليس الآن"
-          }
-        }
-      }
-    },
-    "Not done yet" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "لم يُنجَز بعد"
+            "value" : "غير مُعَدّ"
           }
         }
       }
@@ -491,22 +601,12 @@
         }
       }
     },
-    "Not installed in this Windows" : {
+    "Not installed in Windows" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "غير مثبّت في نسخة ويندوز هذه"
-          }
-        }
-      }
-    },
-    "Not installed yet" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "لم يُثبَّت بعد"
+            "value" : "غير مثبّت في Windows"
           }
         }
       }
@@ -521,16 +621,6 @@
         }
       }
     },
-    "Not set up" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "لم يُجهَّز"
-          }
-        }
-      }
-    },
     "OK" : {
       "localizations" : {
         "ar" : {
@@ -541,22 +631,22 @@
         }
       }
     },
-    "Open Login Items" : {
+    "Open System Settings" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "افتح عناصر تسجيل الدخول"
+            "value" : "فتح إعدادات النظام"
           }
         }
       }
     },
-    "Putting NVDA's setting back…" : {
+    "Pending" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "جارٍ إرجاع إعداد NVDA كما كان…"
+            "value" : "قيد الانتظار"
           }
         }
       }
@@ -601,12 +691,22 @@
         }
       }
     },
-    "Removing the helper from this Mac…" : {
+    "Removing the Caps Lock mapping from Windows…" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "جارٍ إزالة المساعد من الماك…"
+            "value" : "جارٍ إزالة تعيين مفتاح Caps Lock من Windows…"
+          }
+        }
+      }
+    },
+    "Removing the helper…" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ إزالة المساعد…"
           }
         }
       }
@@ -621,22 +721,12 @@
         }
       }
     },
-    "Report copied" : {
+    "Restart" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "نُسخ التقرير"
-          }
-        }
-      }
-    },
-    "Restart Now" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "أعد التشغيل الآن"
+            "value" : "إعادة التشغيل"
           }
         }
       }
@@ -646,7 +736,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "أعد تشغيل ويندوز"
+            "value" : "إعادة تشغيل Windows"
           }
         }
       }
@@ -656,57 +746,57 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "هل تعيد تشغيل ويندوز الآن؟"
+            "value" : "هل تريد إعادة تشغيل Windows الآن؟"
           }
         }
       }
     },
-    "Restart Windows to finish" : {
+    "Restart Windows to complete setup" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "أعد تشغيل ويندوز لإتمام الإعداد"
+            "value" : "أعد تشغيل Windows لإكمال الإعداد"
           }
         }
       }
     },
-    "Restarting Windows. This can take a few minutes…" : {
+    "Restarting Windows. This may take a few minutes…" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "جارٍ إعادة تشغيل ويندوز. قد يستغرق ذلك بضع دقائق…"
+            "value" : "جارٍ إعادة تشغيل Windows. قد يستغرق ذلك بضع دقائق…"
           }
         }
       }
     },
-    "Running an older version" : {
+    "Restoring the NVDA setting…" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يعمل بإصدار أقدم"
+            "value" : "جارٍ استعادة إعداد NVDA…"
           }
         }
       }
     },
-    "Running, and not sending Caps Lock to %@ yet" : {
+    "Running and forwarding Caps Lock to %@" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يعمل، ولا يرسل Caps Lock إلى %@ بعد"
+            "value" : "قيد التشغيل ويُمرّر Caps Lock إلى %@"
           }
         }
       }
     },
-    "Running, and sending Caps Lock to %@" : {
+    "Running; not yet forwarding Caps Lock to %@" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يعمل، ويرسل Caps Lock إلى %@"
+            "value" : "قيد التشغيل، ولم يبدأ تمرير Caps Lock إلى %@ بعد"
           }
         }
       }
@@ -716,77 +806,37 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ابدأ الإعداد"
+            "value" : "إعداد"
           }
         }
       }
     },
-    "Set Up prepares this Mac and Windows, so you can hold Caps Lock as your screen reader's key." : {
+    "Set up CapsBridge to use Caps Lock as the screen reader modifier key in Windows." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "زر «ابدأ الإعداد» يجهّز الماك وويندوز معًا، لتستخدم Caps Lock بالضغط المستمر مفتاحًا لقارئ الشاشة."
+            "value" : "قم بإعداد CapsBridge لاستخدام Caps Lock مفتاحَ تعديل لقارئ الشاشة في Windows."
           }
         }
       }
     },
-    "Set up, and ready the next time Windows starts" : {
+    "Setup completes the next time Windows starts." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "جُهِّز، وسيعمل عند تشغيل ويندوز القادم"
+            "value" : "يكتمل الإعداد عند تشغيل Windows في المرة القادمة."
           }
         }
       }
     },
-    "Set up, and waiting for Windows to restart" : {
+    "Some items need attention" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "جُهِّز، وينتظر إعادة تشغيل ويندوز"
-          }
-        }
-      }
-    },
-    "Set up. It can't be checked right now" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "جُهِّز. يتعذّر فحصه الآن"
-          }
-        }
-      }
-    },
-    "Set up. It's checked again when Windows runs" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "جُهِّز. يُفحص مجددًا حين يعمل ويندوز"
-          }
-        }
-      }
-    },
-    "Setting up the Caps Lock key in Windows…" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "جارٍ تجهيز مفتاح Caps Lock في ويندوز…"
-          }
-        }
-      }
-    },
-    "Something needs fixing" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "هناك ما يحتاج إلى إصلاح"
+            "value" : "بعض العناصر تحتاج إلى معالجة"
           }
         }
       }
@@ -796,97 +846,117 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "شغّل ويندوز"
+            "value" : "تشغيل Windows"
           }
         }
       }
     },
-    "Start Windows to clean it up?" : {
+    "Start Windows to complete removal?" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "هل تشغّل ويندوز لتنظيفه؟"
+            "value" : "هل تريد تشغيل Windows لإكمال الإزالة؟"
           }
         }
       }
     },
-    "Start Windows to finish" : {
+    "Start Windows to complete setup" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "شغّل ويندوز لإتمام الإعداد"
+            "value" : "شغّل Windows لإكمال الإعداد"
           }
         }
       }
     },
-    "Starting Windows. This can take a minute…" : {
+    "Starting Windows. This may take a minute…" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "جارٍ تشغيل ويندوز. قد يستغرق ذلك دقيقة…"
+            "value" : "جارٍ تشغيل Windows. قد يستغرق ذلك دقيقة…"
           }
         }
       }
     },
-    "Taking the Caps Lock key out of Windows…" : {
+    "The NVDA configuration changed while CapsBridge was updating it, so it was left unchanged. Try again." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "جارٍ إزالة تعيين Caps Lock من ويندوز…"
+            "value" : "تغيّرت إعدادات NVDA أثناء تحديثها، لذا تُركت دون تغيير. حاول مرة أخرى."
           }
         }
       }
     },
-    "The helper couldn't be installed: %@" : {
+    "The NVDA configuration file could not be read and was left unchanged." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تعذّر تثبيت المساعد: %@"
+            "value" : "تعذّرت قراءة ملف إعدادات NVDA فتُرك دون تغيير."
           }
         }
       }
     },
-    "The helper couldn't be started. Try again, or restart this Mac." : {
+    "The NVDA configuration file could not be read and was left unchanged. In NVDA, choose Preferences > Settings > Keyboard, and then select Caps Lock as an NVDA modifier key." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تعذّر تشغيل المساعد. حاول مجددًا، أو أعد تشغيل الماك."
+            "value" : "تعذّرت قراءة ملف إعدادات NVDA فتُرك دون تغيير. في NVDA، اختر التفضيلات > الإعدادات > لوحة المفاتيح، ثم حدّد Caps Lock مفتاحَ تعديل."
           }
         }
       }
     },
-    "The setup completes when Windows starts." : {
+    "The helper could not be installed. %@" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يكتمل الإعداد عند تشغيل ويندوز."
+            "value" : "تعذّر تثبيت المساعد. %@"
           }
         }
       }
     },
-    "This removes the helper from this Mac, takes the Caps Lock key out of Windows, and puts NVDA's setting back if CapsBridge changed it. Nothing else is touched." : {
+    "The helper could not be started. Try again, or restart your Mac." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "سيُزال المساعد من الماك، وتعيين Caps Lock من ويندوز، ويعود إعداد NVDA كما كان إن كان CapsBridge قد غيّره. ولن يُمَسّ شيء آخر."
+            "value" : "تعذّر تشغيل المساعد. حاول مرة أخرى، أو أعد تشغيل الـ Mac."
           }
         }
       }
     },
-    "Turn CapsBridge on in Login Items" : {
+    "The helper will be removed from this Mac, the Caps Lock mapping will be removed from Windows, and the NVDA setting will be restored if CapsBridge changed it. No other settings are affected." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "فعّل CapsBridge في عناصر تسجيل الدخول"
+            "value" : "ستتم إزالة المساعد من هذا الـ Mac، وإزالة تعيين مفتاح Caps Lock من Windows، واستعادة إعداد NVDA إذا كان CapsBridge قد غيّره. ولن تتأثر أي إعدادات أخرى."
+          }
+        }
+      }
+    },
+    "To change settings in Windows, CapsBridge requires the “Allow agent control of this VM” setting in VMPal, which is turned off for %@." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لتغيير الإعدادات في Windows، يتطلب CapsBridge تفعيل الخيار “Allow agent control of this VM” في VMPal، وهو متوقف للجهاز %@."
+          }
+        }
+      }
+    },
+    "To set up CapsBridge, move it to the Applications folder." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لإعداد CapsBridge، انقله إلى مجلد التطبيقات."
           }
         }
       }
@@ -896,27 +966,37 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "فعّله وتابع"
+            "value" : "تفعيل ومتابعة"
           }
         }
       }
     },
-    "Turned off in System Settings, under Login Items" : {
+    "Turn on CapsBridge in System Settings > General > Login Items & Extensions, and then try again." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "متوقف من إعدادات النظام، في عناصر تسجيل الدخول"
+            "value" : "فعّل CapsBridge في إعدادات النظام > عام > عناصر تسجيل الدخول والامتدادات، ثم حاول مرة أخرى."
           }
         }
       }
     },
-    "Turning on Caps Lock as an NVDA key…" : {
+    "Turned off in Login Items" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "جارٍ تفعيل مفتاح Caps Lock لـ NVDA…"
+            "value" : "متوقف في عناصر تسجيل الدخول"
+          }
+        }
+      }
+    },
+    "Turning on Caps Lock as an NVDA modifier key…" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ تفعيل Caps Lock مفتاحَ تعديل في NVDA…"
           }
         }
       }
@@ -931,27 +1011,17 @@
         }
       }
     },
-    "VMPal answered in a way CapsBridge doesn't understand. Updating VMPal and CapsBridge may help." : {
+    "VMPal could not complete the request. %@" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "جاء رد VMPal بصيغة لا يفهمها CapsBridge. قد يفيد تحديث VMPal وCapsBridge."
+            "value" : "تعذّر على VMPal إكمال الطلب. %@"
           }
         }
       }
     },
-    "VMPal couldn't do that: %@" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "تعذّر ذلك على VMPal: %@"
-          }
-        }
-      }
-    },
-    "VMPal isn't installed" : {
+    "VMPal is not installed" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -961,132 +1031,112 @@
         }
       }
     },
-    "VMPal's “Allow agent control of this VM” setting is off for %@. CapsBridge needs it on to change settings inside Windows." : {
+    "VMPal is not responding" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "خيار «Allow agent control of this VM» في VMPal متوقف للجهاز %@. يحتاج CapsBridge إلى تفعيله ليغيّر الإعدادات داخل ويندوز."
+            "value" : "تطبيق VMPal لا يستجيب"
           }
         }
       }
     },
-    "Version %@" : {
+    "VMPal returned an unexpected response. Updating VMPal and CapsBridge may resolve the issue." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "الإصدار %@"
+            "value" : "أعاد VMPal استجابة غير متوقعة. قد يؤدي تحديث VMPal وCapsBridge إلى حل المشكلة."
           }
         }
       }
     },
-    "Waiting for Windows to be ready…" : {
+    "Waiting for Windows…" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "في انتظار جاهزية ويندوز…"
+            "value" : "جارٍ انتظار Windows…"
           }
         }
       }
     },
-    "Windows answered in a way CapsBridge doesn't understand." : {
+    "Windows Virtual Machine" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "جاء رد ويندوز بصيغة لا يفهمها CapsBridge."
+            "value" : "جهاز Windows الافتراضي"
           }
         }
       }
     },
-    "Windows can't run administrator commands yet. Open the virtual machine, sign in, and let VMPal Tools finish installing, then try again." : {
+    "Windows applies the Caps Lock mapping when it restarts. Save any open documents in Windows before restarting." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "لا يستطيع ويندوز تنفيذ أوامر المدير بعد. افتح الجهاز الافتراضي وسجّل الدخول ودع VMPal Tools يكمل تثبيته، ثم حاول مجددًا."
+            "value" : "يطبّق Windows تعيين مفتاح Caps Lock عند إعادة تشغيله. احفظ أي مستندات مفتوحة في Windows قبل إعادة التشغيل."
           }
         }
       }
     },
-    "Windows didn't answer, so it couldn't be checked" : {
+    "Windows cannot run administrator commands yet. Open the virtual machine, sign in, wait for VMPal Tools to finish installing, and then try again." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "لم يُجب ويندوز، فتعذّر فحصه"
+            "value" : "لا يستطيع Windows تنفيذ أوامر المسؤول بعد. افتح الجهاز الافتراضي وسجّل الدخول، وانتظر حتى يكتمل تثبيت VMPal Tools، ثم حاول مرة أخرى."
           }
         }
       }
     },
-    "Windows didn't become ready in time. Sign in to Windows in the virtual machine's window, then try again." : {
+    "Windows did not become available in time. Sign in to Windows in the virtual machine window, and then try again." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "لم يجهز ويندوز في الوقت المتوقع. سجّل الدخول إلى ويندوز من نافذة الجهاز الافتراضي، ثم حاول مجددًا."
+            "value" : "لم يصبح Windows متاحًا في الوقت المتوقع. سجّل الدخول إلى Windows في نافذة الجهاز الافتراضي، ثم حاول مرة أخرى."
           }
         }
       }
     },
-    "Windows goes back to its usual Caps Lock the next time it restarts." : {
+    "Windows did not respond; the mapping could not be verified" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يعود Caps Lock في ويندوز إلى سلوكه المعتاد عند إعادة التشغيل القادمة."
+            "value" : "لم يستجب Windows، فتعذّر التحقق من التعيين"
           }
         }
       }
     },
-    "Windows in %@ was left as it is. Its key mapping does nothing without CapsBridge." : {
+    "Windows is taking longer than expected to restart. When Windows is available, open CapsBridge again to complete setup." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تُرك ويندوز في %@ كما هو. وتعيين المفتاح فيه لا يفعل شيئًا من دون CapsBridge."
+            "value" : "يستغرق Windows وقتًا أطول من المتوقع لإعادة التشغيل. عندما يصبح Windows متاحًا، افتح CapsBridge مرة أخرى لإكمال الإعداد."
           }
         }
       }
     },
-    "Windows is taking a long time to restart. Once it's back, open CapsBridge again and it finishes by itself." : {
+    "Windows must restart to apply the Caps Lock mapping. Save any open documents in Windows before continuing." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يستغرق ويندوز وقتًا طويلًا في إعادة التشغيل. حين يعود، افتح CapsBridge من جديد وسيُتم الإعداد من تلقاء نفسه."
+            "value" : "يجب إعادة تشغيل Windows لتطبيق تعيين مفتاح Caps Lock. احفظ أي مستندات مفتوحة في Windows قبل المتابعة."
           }
         }
       }
     },
-    "Windows learns the Caps Lock key when it starts. Save your work in Windows first." : {
+    "Windows returned an unexpected response." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يتعرّف ويندوز على مفتاح Caps Lock عند بدء تشغيله. احفظ عملك في ويندوز أولًا."
-          }
-        }
-      }
-    },
-    "Windows needs to restart to learn the Caps Lock key. Save any open work in Windows first." : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "يحتاج ويندوز إلى إعادة تشغيل ليتعرّف على مفتاح Caps Lock. احفظ أي عمل مفتوح في ويندوز أولًا."
-          }
-        }
-      }
-    },
-    "Windows virtual machine" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "جهاز ويندوز الافتراضي"
+            "value" : "أعاد Windows استجابة غير متوقعة."
           }
         }
       }

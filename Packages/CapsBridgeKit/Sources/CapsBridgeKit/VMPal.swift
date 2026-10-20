@@ -113,7 +113,8 @@ public struct VMPalCommandLine: VMPalControlling {
         command += ["--", program] + arguments
         // vmpal exits with the command's own status, so a failing command still answers in JSON.
         let output = try await run(command)
-        if let result = try? JSONDecoder().decode(ExecResult.self, from: output.standardOutput) {
+        if let result = try? JSONDecoder().decode(ExecResult.self, from: output.standardOutput),
+           result.exitCode != nil || result.state != nil {
             return result
         }
         throw VMPalError.commandFailed(command: "exec", status: output.status, message: Self.message(from: output))

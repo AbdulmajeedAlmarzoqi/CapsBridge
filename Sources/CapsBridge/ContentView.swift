@@ -3,7 +3,6 @@ import SwiftUI
 
 struct ContentView: View {
     @Bindable var model: AppModel
-    @AccessibilityFocusState private var headlineIsFocused: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -33,8 +32,9 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
             model.refreshAfterReturning()
         }
-        .onChange(of: model.summary) {
-            headlineIsFocused = true
+        // A question dismissed any other way than with its buttons counts as declined.
+        .onChange(of: model.isPromptPresented) { _, isPresented in
+            if !isPresented, model.prompt != nil { model.answer(false) }
         }
     }
 
@@ -45,7 +45,6 @@ struct ContentView: View {
                 Text(model.headline)
                     .font(.title2.bold())
                     .accessibilityAddTraits(.isHeader)
-                    .accessibilityFocused($headlineIsFocused)
                 if !model.explanation.isEmpty {
                     Text(model.explanation)
                         .foregroundStyle(.secondary)
@@ -56,12 +55,12 @@ struct ContentView: View {
     }
 
     private var machinePicker: some View {
-        Picker("Windows virtual machine", selection: $model.selectedMachineID) {
+        Picker("Windows Virtual Machine", selection: $model.selectedMachineID) {
             ForEach(model.inspection.windowsMachines) { machine in
                 Text(machine.name).tag(Optional(machine.id))
             }
         }
-        .disabled(model.activity != .idle)
+        .disabled(!model.canAct)
         .onChange(of: model.selectedMachineID) { _, selected in
             guard selected != model.inspection.machine?.id else { return }
             Task { await model.checkAgain() }
@@ -87,30 +86,34 @@ struct ContentView: View {
             ProgressView()
                 .controlSize(.small)
                 .accessibilityHidden(true)
-        } else if model.activity == .working {
-            HStack(spacing: 10) {
-                ProgressView()
-                    .controlSize(.small)
-                Text(model.progress ?? "")
-            }
-            .accessibilityElement(children: .combine)
         } else {
-            HStack {
-                Button(model.primaryTitle) {
-                    Task { await model.performPrimaryAction() }
-                }
-                .keyboardShortcut(.defaultAction)
-                .controlSize(.large)
-                .disabled(model.activity != .idle)
-
-                Spacer()
-
-                if model.canRemove {
-                    Button("Remove CapsBridge…") {
-                        Task { await model.remove() }
+            VStack(alignment: .leading, spacing: 14) {
+                if model.activity == .working {
+                    HStack(spacing: 10) {
+                        ProgressView()
+                            .controlSize(.small)
+                        Text(model.progress ?? "")
                     }
+                    .accessibilityElement(children: .combine)
+                }
+                // The buttons stay where they are while the app works, so VoiceOver's cursor does too.
+                HStack {
+                    Button(model.primaryTitle) {
+                        Task { await model.performPrimaryAction() }
+                    }
+                    .keyboardShortcut(.defaultAction)
                     .controlSize(.large)
-                    .disabled(model.activity != .idle)
+                    .disabled(!model.canAct)
+
+                    Spacer()
+
+                    if model.canRemove {
+                        Button("Remove CapsBridge…") {
+                            Task { await model.remove() }
+                        }
+                        .controlSize(.large)
+                        .disabled(!model.canAct)
+                    }
                 }
             }
         }
@@ -136,7 +139,7 @@ private struct SummaryIcon: View {
         case .ready: "checkmark.seal.fill"
         case .needsAttention: "exclamationmark.triangle.fill"
         case .restartNeeded, .startNeeded: "arrow.clockwise.circle.fill"
-        case .vmpalMissing, .noWindowsMachine: "questionmark.circle.fill"
+        case .vmpalMissing, .vmpalNotResponding, .noWindowsMachine: "questionmark.circle.fill"
         case .notSetUp: "capslock.fill"
         }
     }
@@ -147,7 +150,7 @@ private struct SummaryIcon: View {
         case .ready: .green
         case .needsAttention: .orange
         case .restartNeeded, .startNeeded, .notSetUp: .accentColor
-        case .vmpalMissing, .noWindowsMachine: .secondary
+        case .vmpalMissing, .vmpalNotResponding, .noWindowsMachine: .secondary
         }
     }
 }
@@ -199,7 +202,7 @@ private struct CheckRow: View {
     private var status: Text {
         switch check.mark {
         case .good: Text("OK")
-        case .pending: Text("Not done yet")
+        case .pending: Text("Pending")
         case .problem: Text("Needs attention")
         case .neutral: Text(verbatim: "")
         }

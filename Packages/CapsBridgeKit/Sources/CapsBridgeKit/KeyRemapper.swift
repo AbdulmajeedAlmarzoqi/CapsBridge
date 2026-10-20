@@ -2,7 +2,7 @@ import Foundation
 import IOKit.hidsystem
 
 /// One entry of macOS's `UserKeyMapping`: the key pressed and the key the system reports instead.
-public struct KeyMapping: Hashable, Sendable {
+public struct KeyMapping: Codable, Hashable, Sendable {
     public var source: UInt64
     public var destination: UInt64
 
@@ -59,9 +59,17 @@ public final class KeyRemapper {
     private static let destinationKey = "HIDKeyboardModifierMappingDst"
 
     private let client = IOHIDEventSystemClientCreateSimpleClient(kCFAllocatorDefault)
-    private var displaced: [KeyMapping] = []
+    private let store: SharedStore?
+    /// The user's own Caps Lock mappings the bridge took the place of. Kept on disk too, so a helper
+    /// that was restarted, or the app removing everything, can still put them back.
+    private var displaced: [KeyMapping] {
+        didSet { store?.saveDisplacedMappings(displaced) }
+    }
 
-    public init() {}
+    public init(store: SharedStore? = nil) {
+        self.store = store
+        displaced = store?.loadDisplacedMappings() ?? []
+    }
 
     public func currentTable() -> KeyMappingTable {
         let raw = IOHIDEventSystemClientCopyProperty(client, Self.property as CFString) as? [[String: NSNumber]] ?? []

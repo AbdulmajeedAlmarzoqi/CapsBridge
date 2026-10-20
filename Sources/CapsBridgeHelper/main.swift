@@ -11,8 +11,15 @@ import CapsBridgeKit
 
 @MainActor
 final class Helper {
+    private enum Pause: Hashable {
+        case screenLocked, sessionInactive, asleep
+    }
+
     private let store = SharedStore.standard
-    private let remapper = KeyRemapper()
+    private lazy var remapper = KeyRemapper(store: store)
+    /// While the screen is locked, another user has the Mac, or it sleeps, Caps Lock is Caps Lock:
+    /// the frontmost app stays the same then, and a password may need capitals.
+    private var pauses: Set<Pause> = []
     private let startedAt = Date()
     private var configuration = BridgeConfiguration()
     private var configurationDate: Date?
@@ -28,12 +35,14 @@ final class Helper {
             let processID = application?.processIdentifier
             MainActor.assumeIsolated { self?.update(bundleIdentifier: bundleIdentifier, processID: processID) }
         }
-        workspace.notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: .main) { [weak self] _ in
-            MainActor.assumeIsolated { self?.updateForFrontmostApplication() }
-        }
-        DistributedNotificationCenter.default().addObserver(forName: CapsBridgeIdentifiers.configurationChanged, object: nil, queue: .main) { [weak self] _ in
-            MainActor.assumeIsolated { self?.updateForFrontmostApplication() }
-        }
+        observe(workspace.notificationCenter, NSWorkspace.willSleepNotification) { $0.pause(.asleep) }
+        observe(workspace.notificationCenter, NSWorkspace.didWakeNotification) { $0.resume(.asleep) }
+        observe(workspace.notificationCenter, NSWorkspace.sessionDidResignActiveNotification) { $0.pause(.sessionInactive) }
+        observe(workspace.notificationCenter, NSWorkspace.sessionDidBecomeActiveNotification) { $0.resume(.sessionInactive) }
+        let distributed = DistributedNotificationCenter.default()
+        observe(distributed, Notification.Name("com.apple.screenIsLocked")) { $0.pause(.screenLocked) }
+        observe(distributed, Notification.Name("com.apple.screenIsUnlocked")) { $0.resume(.screenLocked) }
+        observe(distributed, CapsBridgeIdentifiers.configurationChanged) { $0.updateForFrontmostApplication() }
 
         // Caps Lock goes back to itself when the helper is stopped.
         for number in [SIGTERM, SIGINT, SIGHUP] {
@@ -52,6 +61,24 @@ final class Helper {
         updateForFrontmostApplication()
     }
 
+    private func observe(_ center: NotificationCenter, _ name: Notification.Name, _ action: @escaping @Sendable @MainActor (Helper) -> Void) {
+        center.addObserver(forName: name, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated {
+                if let self { action(self) }
+            }
+        }
+    }
+
+    private func pause(_ reason: Pause) {
+        pauses.insert(reason)
+        updateForFrontmostApplication()
+    }
+
+    private func resume(_ reason: Pause) {
+        pauses.remove(reason)
+        updateForFrontmostApplication()
+    }
+
     private func updateForFrontmostApplication() {
         let application = NSWorkspace.shared.frontmostApplication
         update(bundleIdentifier: application?.bundleIdentifier, processID: application?.processIdentifier)
@@ -59,10 +86,10 @@ final class Helper {
 
     private func update(bundleIdentifier: String?, processID: pid_t?) {
         reloadConfigurationIfChanged()
-        let machine = FrontmostMachine.machine(
+        let machine = pauses.isEmpty ? FrontmostMachine.machine(
             bundleIdentifier: bundleIdentifier,
             arguments: processID.map(ProcessArguments.of(processID:)) ?? [],
-            configuration: configuration)
+            configuration: configuration) : nil
 
         if machine != nil {
             // A mapping left behind by a run that was killed counts as on, and comes off below like any other.

@@ -11,6 +11,8 @@ struct Inspection {
     var guest: GuestSnapshot?
     var helper: HelperController.State = .notInstalled
     var configuration = BridgeConfiguration()
+    /// Why VMPal couldn't be asked about its virtual machines, when it couldn't.
+    var listingFailure: String?
 
     /// Whether commands can run in the VM's Windows now, and if not, why.
     enum Reach: Equatable {
@@ -33,6 +35,8 @@ struct Inspection {
 
     enum Summary: Equatable {
         case vmpalMissing
+        /// VMPal is there, and didn't answer.
+        case vmpalNotResponding
         case noWindowsMachine
         case notSetUp
         /// It was set up, and something has changed since.
@@ -45,6 +49,7 @@ struct Inspection {
 
     var summary: Summary {
         guard installation != nil else { return .vmpalMissing }
+        guard listingFailure == nil else { return .vmpalNotResponding }
         guard machine != nil else { return .noWindowsMachine }
         let helperRuns = helper == .running
 
@@ -61,7 +66,7 @@ struct Inspection {
             case nil:
                 // Windows didn't answer the questions. What was set up is taken to still be.
                 if isEnabled { return helperRuns ? .ready : .needsAttention }
-                return .notSetUp
+                return isAwaitingRestart ? .restartNeeded : .notSetUp
             }
         case .shutDown:
             if isAwaitingRestart { return .startNeeded }
@@ -105,7 +110,7 @@ extension Inspection {
             checks.append(Check(
                 kind: .vmpal,
                 title: String(localized: "VMPal"),
-                detail: String(localized: "Version \(installation.version)"),
+                detail: String(localized: "Installed (version \(installation.version))"),
                 mark: .good))
         } else {
             checks.append(Check(
@@ -115,11 +120,12 @@ extension Inspection {
                 mark: .problem))
             return checks
         }
+        guard listingFailure == nil else { return checks }
 
         guard let machine else {
             checks.append(Check(
                 kind: .machine,
-                title: String(localized: "Windows virtual machine"),
+                title: String(localized: "Windows Virtual Machine"),
                 detail: String(localized: "None found"),
                 mark: .problem))
             return checks
@@ -127,7 +133,7 @@ extension Inspection {
 
         checks.append(Check(
             kind: .machine,
-            title: String(localized: "Windows virtual machine"),
+            title: String(localized: "Windows Virtual Machine"),
             detail: machineDetail(for: machine),
             mark: reach == .ready ? .good : .neutral))
         checks.append(helperCheck(for: machine))
@@ -139,63 +145,63 @@ extension Inspection {
     private func machineDetail(for machine: VirtualMachine) -> String {
         switch reach {
         case .ready: String(localized: "\(machine.name) is running")
-        case .shutDown: String(localized: "\(machine.name) isn't running")
-        case .controlOff: String(localized: "\(machine.name) is running, with VMPal's “Allow agent control of this VM” turned off")
-        case .notReady: String(localized: "\(machine.name) is starting, or waiting for someone to sign in")
+        case .shutDown: String(localized: "\(machine.name) is not running")
+        case .controlOff: String(localized: "\(machine.name) is running, but “Allow agent control of this VM” is turned off in VMPal")
+        case .notReady: String(localized: "\(machine.name) is starting up or waiting for a user to sign in")
         }
     }
 
     private func helperCheck(for machine: VirtualMachine) -> Check {
-        let title = String(localized: "Helper on this Mac")
+        let title = String(localized: "CapsBridge Helper")
         switch helper {
         case .running:
             if isEnabled {
-                return Check(kind: .helper, title: title, detail: String(localized: "Running, and sending Caps Lock to \(machine.name)"), mark: .good)
+                return Check(kind: .helper, title: title, detail: String(localized: "Running and forwarding Caps Lock to \(machine.name)"), mark: .good)
             }
-            return Check(kind: .helper, title: title, detail: String(localized: "Running, and not sending Caps Lock to \(machine.name) yet"), mark: .pending)
+            return Check(kind: .helper, title: title, detail: String(localized: "Running; not yet forwarding Caps Lock to \(machine.name)"), mark: .pending)
         case .notInstalled:
-            return Check(kind: .helper, title: title, detail: String(localized: "Not installed yet"), mark: isEnabled ? .problem : .pending)
+            return Check(kind: .helper, title: title, detail: String(localized: "Not installed"), mark: isEnabled ? .problem : .pending)
         case .needsApproval:
-            return Check(kind: .helper, title: title, detail: String(localized: "Turned off in System Settings, under Login Items"), mark: .problem)
+            return Check(kind: .helper, title: title, detail: String(localized: "Turned off in Login Items"), mark: .problem)
         case .notRunning:
             return Check(kind: .helper, title: title, detail: String(localized: "Not running"), mark: .problem)
         case .outdated:
-            return Check(kind: .helper, title: title, detail: String(localized: "Running an older version"), mark: .problem)
+            return Check(kind: .helper, title: title, detail: String(localized: "An earlier version is running"), mark: .problem)
         }
     }
 
     private var keyMappingCheck: Check {
-        let title = String(localized: "Caps Lock key in Windows")
+        let title = String(localized: "Caps Lock in Windows")
         switch reach {
         case .ready:
             break
         case .shutDown:
             if isAwaitingRestart {
-                return Check(kind: .keyMapping, title: title, detail: String(localized: "Set up, and ready the next time Windows starts"), mark: .pending)
+                return Check(kind: .keyMapping, title: title, detail: String(localized: "Configured; takes effect the next time Windows starts"), mark: .pending)
             }
             if isEnabled {
-                return Check(kind: .keyMapping, title: title, detail: String(localized: "Set up. It's checked again when Windows runs"), mark: .good)
+                return Check(kind: .keyMapping, title: title, detail: String(localized: "Configured; verified when Windows is running"), mark: .good)
             }
-            return Check(kind: .keyMapping, title: title, detail: String(localized: "Not set up"), mark: .pending)
+            return Check(kind: .keyMapping, title: title, detail: String(localized: "Not configured"), mark: .pending)
         case .controlOff, .notReady:
             if isEnabled {
-                return Check(kind: .keyMapping, title: title, detail: String(localized: "Set up. It can't be checked right now"), mark: .neutral)
+                return Check(kind: .keyMapping, title: title, detail: String(localized: "Configured; cannot be verified right now"), mark: .neutral)
             }
-            return Check(kind: .keyMapping, title: title, detail: String(localized: "Can't be checked right now"), mark: .pending)
+            return Check(kind: .keyMapping, title: title, detail: String(localized: "Cannot be verified right now"), mark: .pending)
         }
 
         switch guest?.keyMapping {
         case .active?:
             return Check(kind: .keyMapping, title: title, detail: String(localized: "Ready"), mark: .good)
         case .awaitingRestart?:
-            return Check(kind: .keyMapping, title: title, detail: String(localized: "Set up, and waiting for Windows to restart"), mark: .pending)
+            return Check(kind: .keyMapping, title: title, detail: String(localized: "Configured; takes effect after Windows restarts"), mark: .pending)
         case .missing?:
             if isEnabled || isAwaitingRestart {
-                return Check(kind: .keyMapping, title: title, detail: String(localized: "Missing. Windows may have been reset or taken back to a snapshot"), mark: .problem)
+                return Check(kind: .keyMapping, title: title, detail: String(localized: "Missing. Windows may have been reset or restored from a snapshot."), mark: .problem)
             }
-            return Check(kind: .keyMapping, title: title, detail: String(localized: "Not set up"), mark: .pending)
+            return Check(kind: .keyMapping, title: title, detail: String(localized: "Not configured"), mark: .pending)
         case nil:
-            return Check(kind: .keyMapping, title: title, detail: String(localized: "Windows didn't answer, so it couldn't be checked"), mark: .neutral)
+            return Check(kind: .keyMapping, title: title, detail: String(localized: "Windows did not respond; the mapping could not be verified"), mark: .neutral)
         }
     }
 
@@ -204,13 +210,13 @@ extension Inspection {
         let title = String(localized: "NVDA")
         switch guest.nvda {
         case .notInstalled:
-            return Check(kind: .nvda, title: title, detail: String(localized: "Not installed in this Windows"), mark: .neutral)
+            return Check(kind: .nvda, title: title, detail: String(localized: "Not installed in Windows"), mark: .neutral)
         case .capsLockOn:
-            return Check(kind: .nvda, title: title, detail: String(localized: "Caps Lock is an NVDA key"), mark: .good)
+            return Check(kind: .nvda, title: title, detail: String(localized: "Caps Lock is an NVDA modifier key"), mark: .good)
         case .capsLockOff:
-            return Check(kind: .nvda, title: title, detail: String(localized: "Caps Lock isn't an NVDA key yet"), mark: isEnabled ? .problem : .pending)
+            return Check(kind: .nvda, title: title, detail: String(localized: "Caps Lock is not yet an NVDA modifier key"), mark: isEnabled ? .problem : .pending)
         case .unreadable:
-            return Check(kind: .nvda, title: title, detail: String(localized: "Its settings file can't be read, so it's left alone. In NVDA's Keyboard settings, choose Caps Lock as an NVDA modifier key"), mark: .neutral)
+            return Check(kind: .nvda, title: title, detail: String(localized: "The NVDA configuration file could not be read and was left unchanged. In NVDA, choose Preferences > Settings > Keyboard, and then select Caps Lock as an NVDA modifier key."), mark: .neutral)
         }
     }
 }

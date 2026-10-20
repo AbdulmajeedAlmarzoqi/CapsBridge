@@ -29,7 +29,7 @@ report() { grep -E "error:|warning: [^M]|BUILD|ARCHIVE|EXPORT|Uploaded" || true;
 case "$MODE" in
 ci)
 	echo "==> Testing CapsBridgeKit"
-	xcrun swift test --package-path Packages/CapsBridgeKit 2>&1 | grep -E "error|✘|Test run" || true
+	xcrun swift test --package-path Packages/CapsBridgeKit 2>&1 | grep -E "error|✘|Test run|passed|failed"
 	echo "==> Compile check (unsigned)"
 	xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration Release -destination "platform=macOS,arch=arm64" \
 		-derivedDataPath "$DERIVED" CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY= DEVELOPMENT_TEAM= build | report
@@ -62,6 +62,11 @@ for attempt in $(seq 1 60); do
 	if xcodebuild -exportNotarizedApp -archivePath "$ARCHIVE" -exportPath build/notarized >build/notarize.log 2>&1; then
 		echo "notarized (attempt $attempt)"
 		break
+	fi
+	# A rejection won't turn into an acceptance by waiting.
+	if grep -q -i -E "invalid|rejected" build/notarize.log; then
+		echo "Apple rejected the app; see build/notarize.log" >&2
+		exit 1
 	fi
 	if [ "$attempt" -eq 60 ]; then
 		echo "notarization did not finish in 30 minutes; see build/notarize.log" >&2

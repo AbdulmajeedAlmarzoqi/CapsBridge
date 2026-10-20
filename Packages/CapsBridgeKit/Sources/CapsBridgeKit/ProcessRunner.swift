@@ -45,6 +45,8 @@ public enum ProcessRunner {
                 }
                 do {
                     try process.run()
+                    // The cancellation handler ran before there was a process to stop.
+                    if Task.isCancelled { process.terminate() }
                 } catch {
                     process.terminationHandler = nil
                     try? outputPipe.fileHandleForWriting.close()

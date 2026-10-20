@@ -1,4 +1,5 @@
 import CapsBridgeKit
+import CoreServices
 import Foundation
 import ServiceManagement
 
@@ -55,11 +56,15 @@ struct HelperController {
         case .notRunning, .outdated:
             // launchd starts the copy inside this app again.
             if await restart(), await isRunning(within: 5) { return }
-            // launchd holds on to the signature of the copy that registered, and won't start one signed
-            // otherwise, as after the app was replaced. Registering anew gives it this copy's.
-            try? await service.unregister()
-            try? await Task.sleep(for: .milliseconds(500))
-            try register()
+            // launchd holds on to the signature of the copy that registered, and refuses to start one
+            // signed otherwise, as after the app was replaced. Registering anew gives it this copy's,
+            // though the system can take a moment to let go of the old registration.
+            for pause in [1, 3] {
+                try? await service.unregister()
+                try? await Task.sleep(for: .seconds(pause))
+                try register()
+                if await isRunning(within: 8) { return }
+            }
         }
         if await isRunning(within: 10) { return }
         if state() == .needsApproval { throw Failure.needsApproval }
@@ -87,6 +92,10 @@ struct HelperController {
     }
 
     private func register() throws {
+        // The system takes the helper's code requirement from its record of this app, which can still
+        // describe the copy this one replaced. Bringing the record up to date first avoids launchd
+        // refusing the helper as signed otherwise.
+        LSRegisterURL(Bundle.main.bundleURL as CFURL, true)
         do {
             try service.register()
         } catch {
