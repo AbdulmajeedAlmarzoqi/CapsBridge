@@ -21,7 +21,7 @@ Click Remove CapsBridge… in the app.
 
 ## How it works
 
-While the Windows window is in front, a small helper maps Caps Lock to F18, which macOS passes to the virtual machine like any other key. In Windows, a Scancode Map entry turns F18 back into Caps Lock. If NVDA is installed, CapsBridge also turns on Caps Lock as an NVDA modifier key. Everywhere else on the Mac, Caps Lock works as usual.
+While the Windows window is in front, a small helper maps Caps Lock to F18, which macOS passes to the virtual machine like any other key. In Windows, a Scancode Map entry turns F18 back into Caps Lock. If NVDA is installed, CapsBridge also turns on Caps Lock as an NVDA modifier key. On keyboards with a § key, it also swaps § and the key next to the left Shift, which Windows otherwise gets the wrong way round. Everywhere else on the Mac, these keys work as usual.
 
 ## Building
 

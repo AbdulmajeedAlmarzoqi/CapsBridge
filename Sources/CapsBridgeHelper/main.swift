@@ -3,11 +3,13 @@
 // macOS tells apps that Caps Lock changed state, not that it went down and came up, so a VM never
 // sees it held and a screen reader in Windows can't use it as its modifier key. While a VM that
 // CapsBridge set up is the frontmost app, this helper maps Caps Lock to F18, which does arrive as
-// a real press and release, and Windows turns F18 back into Caps Lock. In every other app Caps
-// Lock stays what it is.
+// a real press and release, and Windows turns F18 back into Caps Lock. On ISO keyboards it also
+// swaps § and the key next to the left Shift, which reach the VM as each other. In every other app
+// the keys stay what they are.
 
 import AppKit
 import CapsBridgeKit
+import IOKit
 
 @MainActor
 final class Helper {
@@ -26,6 +28,8 @@ final class Helper {
     private var activeMachine: BridgeMachine?
     private var reportedStatus: HelperStatus?
     private var signalSources: [DispatchSourceSignal] = []
+    private var keyboardNotifications: IONotificationPortRef?
+    private var keyboardIterator: io_iterator_t = 0
     private lazy var updates = UpdateWatcher(store: store)
 
     func start() {
@@ -64,7 +68,29 @@ final class Helper {
             return pauses.isEmpty && !Self.isVirtualMachine(NSWorkspace.shared.frontmostApplication?.bundleIdentifier)
         }
         updates.start()
+        watchKeyboards()
         updateForFrontmostApplication()
+    }
+
+    /// A keyboard connected while a VM is in front gets the mapping every keyboard has, and an ISO one
+    /// needs its own as well.
+    private func watchKeyboards() {
+        guard let port = IONotificationPortCreate(kIOMainPortDefault) else { return }
+        keyboardNotifications = port
+        IONotificationPortSetDispatchQueue(port, .main)
+        let connected: IOServiceMatchingCallback = { context, iterator in
+            releaseAll(iterator)
+            guard let context else { return }
+            let helper = Unmanaged<Helper>.fromOpaque(context).takeUnretainedValue()
+            // The HID event system takes the keyboard on a moment after it appears.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                MainActor.assumeIsolated { helper.updateForFrontmostApplication() }
+            }
+        }
+        IOServiceAddMatchingNotification(port, kIOFirstMatchNotification, IOServiceMatching("IOHIDEventService"),
+                                         connected, Unmanaged.passUnretained(self).toOpaque(), &keyboardIterator)
+        // The services there already; going through them arms the notification.
+        releaseAll(keyboardIterator)
     }
 
     private func observe(_ center: NotificationCenter, _ name: Notification.Name, _ action: @escaping @Sendable @MainActor (Helper) -> Void) {
@@ -133,6 +159,12 @@ final class Helper {
         guard status != reportedStatus else { return }
         reportedStatus = status
         try? store.save(status)
+    }
+}
+
+private func releaseAll(_ iterator: io_iterator_t) {
+    while case let service = IOIteratorNext(iterator), service != 0 {
+        IOObjectRelease(service)
     }
 }
 

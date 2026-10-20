@@ -4,7 +4,7 @@ import Testing
 
 @Suite struct KeyMappingTableTests {
     private let capsLockAsEscape = KeyMapping(source: HIDKey.capsLock, destination: 0x7_0000_0029)
-    private let unrelated = KeyMapping(source: 0x7_0000_0064, destination: 0x7_0000_0035)
+    private let unrelated = KeyMapping(source: HIDKey.nonUSBackslash, destination: HIDKey.graveAccent)
 
     @Test func addsAndRemovesTheBridge() {
         var table = KeyMappingTable(mappings: [unrelated])
@@ -34,6 +34,30 @@ import Testing
         table.mappings = [capsLockAsControl]
         table.removeBridge(restoring: displaced)
         #expect(table.mappings == [capsLockAsControl])
+    }
+
+    @Test func swapsTheISOKeysUnlessTheUserMappedEither() {
+        var table = KeyMappingTable()
+        table.insertBridge()
+        #expect(table.swappingISOKeys().mappings == [KeyMappingTable.bridge] + KeyMappingTable.isoKeySwap)
+
+        let mapped = KeyMappingTable(mappings: [unrelated, KeyMappingTable.bridge])
+        #expect(mapped.swappingISOKeys() == mapped)
+    }
+}
+
+@Suite struct KeyboardLayoutTests {
+    @Test func recognizesISOKeyboards() {
+        #expect(KeyboardLayout.isISO(standardType: 1, keyboardType: nil))
+        #expect(KeyboardLayout.isISO(standardType: nil, keyboardType: 41))
+        #expect(!KeyboardLayout.isISO(standardType: nil, keyboardType: 40))
+        #expect(!KeyboardLayout.isISO(standardType: nil, keyboardType: 42))
+        #expect(!KeyboardLayout.isISO(standardType: nil, keyboardType: nil))
+    }
+
+    @Test func prefersTheTypeMacOSGivesTheKeyboard() {
+        #expect(!KeyboardLayout.isISO(standardType: 0, keyboardType: 41))
+        #expect(KeyboardLayout.isISO(standardType: 1, keyboardType: 40))
     }
 }
 
