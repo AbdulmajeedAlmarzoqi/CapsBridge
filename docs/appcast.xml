@@ -7,6 +7,21 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     <description>Updates for CapsBridge</description>
     <language>en</language>
     <item>
+      <title>CapsBridge 1.1.0</title>
+      <pubDate>Tue, 20 Oct 2026 11:48:08 GMT</pubDate>
+      <sparkle:version>2</sparkle:version>
+      <sparkle:shortVersionString>1.1.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>26.0.0</sparkle:minimumSystemVersion>
+      <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
+      <description xml:lang="en" sparkle:format="markdown"><![CDATA[### CapsBridge 1.1.0
+
+The § key now types the right character in Windows, such as ذ in Arabic.]]></description>
+      <description xml:lang="ar" sparkle:format="markdown"><![CDATA[### الإصدار 1.1.0 من CapsBridge
+
+أصبح مفتاح § يكتب الحرف الصحيح في Windows، مثل حرف ذ في العربية.]]></description>
+      <enclosure url="https://github.com/AbdulmajeedAlmarzoqi/CapsBridge/releases/download/v1.1.0/CapsBridge-1.1.0.zip" length="3179513" type="application/octet-stream" sparkle:edSignature="WOfPQK84+iGwiHDzCRICE3A+dAPBeMC8pD7pla6nLM5K6j+LOsO9SG0gLyrBUKNuyTohY6NMKi1WF44O7/mrDQ=="></enclosure>
+    </item>
+    <item>
       <title>CapsBridge 1.0.0</title>
       <pubDate>Tue, 20 Oct 2026 08:07:30 GMT</pubDate>
       <sparkle:version>1</sparkle:version>
@@ -23,6 +38,6 @@ First release.]]></description>
     </item>
   </channel>
 </rss><!-- sparkle-signatures:
-edSignature: bC+EMoKJ6pLgnX14WGkv0qxw+4Z8iomf0ep1N1892NbXQI4/YprFnj0wULt82Z2b8aRtLo5bRqd7RK1IalHTDw==
-length: 1534
+edSignature: f0xs1toSPvBJ+6bzoovvCNZQwK5D3mw/5GskzDDYnhTXyKO6sVSMhqsf+68eeQN6EZe/uFcjS36ybV8XFfQ3Dw==
+length: 2620
 -->

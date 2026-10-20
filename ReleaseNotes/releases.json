@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.1.0",
+    "build": "2",
+    "date": "Tue, 20 Oct 2026 11:48:08 GMT",
+    "url": "https://github.com/AbdulmajeedAlmarzoqi/CapsBridge/releases/download/v1.1.0/CapsBridge-1.1.0.zip",
+    "length": 3179513,
+    "signature": "WOfPQK84+iGwiHDzCRICE3A+dAPBeMC8pD7pla6nLM5K6j+LOsO9SG0gLyrBUKNuyTohY6NMKi1WF44O7/mrDQ=="
+  },
+  {
     "version": "1.0.0",
     "build": "1",
     "date": "Tue, 20 Oct 2026 08:07:30 GMT",
