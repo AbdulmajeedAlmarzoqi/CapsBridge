@@ -101,7 +101,7 @@ echo "bundle: helper, property list and localization OK"
 ZIP="build/CapsBridge-$VERSION.zip"
 rm -f "$ZIP" "$ZIP.sha256"
 ditto -c -k --keepParent "$APP" "$ZIP"
-shasum -a 256 "$ZIP" | tee "$ZIP.sha256"
+(cd build && shasum -a 256 "CapsBridge-$VERSION.zip") | tee "$ZIP.sha256"
 
 echo "==> Adding CapsBridge $VERSION ($BUILD) to the update feed"
 python3 scripts/appcast.py --version "$VERSION" --build "$BUILD" --archive "$ZIP"
